@@ -1,0 +1,24 @@
+productorder_index:
+    path:     /
+    defaults: { _controller: "BPashkevichProductBundle:ProductOrder:index" }
+    methods:  GET
+
+productorder_show:
+    path:     /{id}/show
+    defaults: { _controller: "BPashkevichProductBundle:ProductOrder:show" }
+    methods:  GET
+
+productorder_new:
+    path:     /new
+    defaults: { _controller: "BPashkevichProductBundle:ProductOrder:new" }
+    methods:  [GET, POST]
+
+productorder_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BPashkevichProductBundle:ProductOrder:edit" }
+    methods:  [GET, POST]
+
+productorder_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BPashkevichProductBundle:ProductOrder:delete" }
+    methods:  DELETE

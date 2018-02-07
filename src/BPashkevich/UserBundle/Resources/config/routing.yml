@@ -1,0 +1,7 @@
+b_pashkevich_user_user:
+    resource: "@BPashkevichUserBundle/Resources/config/routing/user.yml"
+    prefix:   /user
+
+b_pashkevich_user_homepage:
+    path:     /
+    defaults: { _controller: BPashkevichUserBundle:Default:index }

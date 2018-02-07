@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    {% block stylesheets %}{% endblock %}
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+            </button>
+            <a class="navbar-brand" href="/">Symfony Shop</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/user/login">Profile</a></li>
+                <li><a href="/cart">My cart</a></li>
+                <li><a href="#">Support</a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div>
+    </div>
+</nav>
+
+<main class="container-fluid" id="main">
+    <div class="row">
+        <div class="col-lg-2 sidebar sidebar-offcanvas" id="sidebar">
+            <h2><a href="/category" style="color: #5EAD2A">Categories</a></h2>
+            <ul class="nav nav-sidebar">
+                {% block menu %}{% endblock %}
+                {% for category in categories %}
+                    <li><a href="/category/{{ category.id }}/show"><span class="menu-name">
+                                {{ category.name }}</span></a></li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+        <div class="overlay" data-toggle="collapse" href="#sidebar" aria-expanded="false" aria-controls="sidebar"></div>
+
+        <div class="col-lg-10 col-lg-offset-2 main">
+            <h1 class="page-header">{% block header %}{% endblock %}</h1>
+
+            {% block main %}{% endblock %}
+
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

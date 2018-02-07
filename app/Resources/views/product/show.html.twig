@@ -1,0 +1,91 @@
+{% extends 'default/main.html.twig' %}
+
+{% block title %}
+    Symfony Shop
+{% endblock %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="../../css/styles.css"/>
+    <link type="text/css" rel="stylesheet" href="../../css/bootstrap.css"/>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block header %}
+    {{ product.name }}
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="metrics text-muted">
+                <img src="{{ product.getImages().get(0).getUrl() }}" alt="img" style="width: 400px; height: 400px;"><br>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="metrics text-muted">
+                <div class="description">
+                    Name:
+                    {{ product.name }}
+                    <br><br>
+                    Brand:
+                    {{ product.brand }}
+                    <br><br>
+                    Materialtype:
+                    {{ product.material }}
+                    <br><br>
+                    Weight:
+                    {{ product.weight }}
+                    <br><br>
+                    Size:
+                    {{ product.size }}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="metrics text-muted">
+                <div class="description">
+                    Description:
+                    {{ product.description }}
+                    <br><br>
+                    Category:
+                    <a href="/category/{{ categoryName.id }}/show">{{ categoryName.name }}</a>
+                    <br><br>
+                    Quanity:
+                    {{ product.quanity }}
+                    <br><br>
+                    Price:
+                    {{ product.price }} $
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4" style="visibility: hidden;">
+            <div class="metrics text-muted">
+                <div class="description">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="metrics text-muted">
+                <div class="description">
+                </div>
+                <a href="/cart/add/{{ product.id }}">
+                    <input type="button" class="shopping-cart" value="Add to Cart">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-4" style="visibility: hidden;">
+            <div class="metrics text-muted">
+                <div class="description">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

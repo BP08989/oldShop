@@ -1,0 +1,39 @@
+{% extends 'default/main.html.twig' %}
+
+{% block title %}
+    Symfony Shop
+{% endblock %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="../../css/styles.css"/>
+    <link type="text/css" rel="stylesheet" href="../../css/bootstrap.css"/>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block header %}
+    Products
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        {% for product in products %}
+            <div class="col-sm-3">
+                <div class="metrics text-muted" href="#map1">
+                    <h2>{{ product.name }}</h2>
+                    <a href="{{ path('product_show', { 'id': product.id }) }}">
+                        <img src="{{ product.getImages().get(0).getUrl() }}" alt="img" style="width: 220px; height: 220px;">
+                    </a><br>
+                    <div class="description">
+                        {{ product.shortDescription }}<br>
+                        {{ product.price }} $
+                    </div>
+                    <a href="/cart/add/{{ product.id }}">
+                        <input type="button" class="shopping-cart" value="Add to Cart">
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

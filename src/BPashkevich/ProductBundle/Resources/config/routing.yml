@@ -1,0 +1,19 @@
+b_pashkevich_product_product:
+    resource: "@BPashkevichProductBundle/Resources/config/routing/product.yml"
+    prefix:   /product
+
+b_pashkevich_product_category:
+    resource: "@BPashkevichProductBundle/Resources/config/routing/category.yml"
+    prefix:   /category
+
+b_pashkevich_product_image:
+        resource: "@BPashkevichProductBundle/Resources/config/routing/image.yml"
+        prefix:   /image
+
+b_pashkevich_product_productorder:
+        resource: "@BPashkevichProductBundle/Resources/config/routing/productorder.yml"
+        prefix:   /productorder
+
+b_pashkevich_product_homepage:
+    path:     /
+    defaults: { _controller: b_pashkevich_product.product_controller:indexAction }

@@ -1,0 +1,24 @@
+image_index:
+    path:     /
+    defaults: { _controller: "BPashkevichProductBundle:Image:index" }
+    methods:  GET
+
+image_show:
+    path:     /{id}/show
+    defaults: { _controller: "BPashkevichProductBundle:Image:show" }
+    methods:  GET
+
+image_new:
+    path:     /new
+    defaults: { _controller: "BPashkevichProductBundle:Image:new" }
+    methods:  [GET, POST]
+
+image_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BPashkevichProductBundle:Image:edit" }
+    methods:  [GET, POST]
+
+image_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BPashkevichProductBundle:Image:delete" }
+    methods:  DELETE

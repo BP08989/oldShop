@@ -1,0 +1,11 @@
+b_pashkevich_product:
+    resource: "@BPashkevichProductBundle/Resources/config/routing.yml"
+    prefix:   /
+
+b_pashkevich_user:
+    resource: "@BPashkevichUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
