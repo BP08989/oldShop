@@ -3,6 +3,8 @@
 namespace BPashkevich\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="BPashkevich\UserBundle\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var int
@@ -24,9 +26,9 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="login", type="string", length=15, unique=true)
+     * @ORM\Column(name="username", type="string", length=15, unique=true)
      */
-    private $login;
+    private $username;
 
     /**
      * @var string
@@ -39,6 +41,10 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=50, unique=true)
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
      */
     private $email;
 
@@ -46,6 +52,12 @@ class User
      * @var int
      *
      * @ORM\Column(name="phoneNumber", type="integer", unique=true)
+     * @Assert\Range(
+     *      min = 1000000,
+     *      max = 999999999,
+     *      minMessage = "The phone number '{{ value }}' is not a valid. Min 7 numbers.",
+     *      maxMessage = "The phone number '{{ value }}' is not a valid. Max 9 numbers."
+     * )
      */
     private $phoneNumber;
 
@@ -81,27 +93,27 @@ class User
     }
 
     /**
-     * Set login.
+     * Set username.
      *
-     * @param string $login
+     * @param string $username
      *
      * @return User
      */
-    public function setLogin($login)
+    public function setUsername($username)
     {
-        $this->login = $login;
+        $this->username = $username;
 
         return $this;
     }
 
     /**
-     * Get login.
+     * Get username.
      *
      * @return string
      */
-    public function getLogin()
+    public function getUsername()
     {
-        return $this->login;
+        return $this->username;
     }
 
     /**
@@ -234,5 +246,51 @@ class User
     public function getProductOrders()
     {
         return $this->productOrders;
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     * <code>
+     * public function getRoles()
+     * {
+     *     return array('ROLE_USER');
+     * }
+     * </code>
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return (Role|string)[] The user roles
+     */
+    public function getRoles()
+    {
+        return [
+            'ROLE_USER'
+        ];
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }

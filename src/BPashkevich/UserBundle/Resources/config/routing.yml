@@ -5,3 +5,7 @@ b_pashkevich_user_user:
 b_pashkevich_user_homepage:
     path:     /
     defaults: { _controller: BPashkevichUserBundle:Default:index }
+
+login:
+    path:     /login
+    defaults: { _controller: BPashkevichUserBundle:Login:login }

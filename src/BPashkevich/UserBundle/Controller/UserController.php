@@ -38,16 +38,20 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            if($this->get('b_pashkevich_user.user_srvice')->checkExistingUserFild($user) == true) {
+                $user->setRole('user');
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
 
-            return $this->redirectToRoute('user_show', array('id' => $user->getId()));
+                return $this->redirectToRoute('user_show', array('id' => $user->getId()));
+            }
         }
 
         return $this->render('user/new.html.twig', array(
             'user' => $user,
             'form' => $form->createView(),
+            'categories' => $this->get('b_pashkevich_product.category_srvice')->getAllCategories(),
         ));
     }
 

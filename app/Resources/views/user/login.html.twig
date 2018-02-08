@@ -1,0 +1,53 @@
+{% extends 'default/main.html.twig' %}
+
+{% block title %}
+    Symfony Shop
+{% endblock %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="../../css/styles.css"/>
+    <link type="text/css" rel="stylesheet" href="../../css/bootstrap.css"/>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block header %}
+    Login
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-sm-4" style="visibility: hidden;">
+            <div class="metrics text-muted">
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="metrics text-muted">
+                {% if errors %}
+                    <div class="alert alert-danger">
+                        {{ errors.messageKey }}
+                    </div>
+                {% endif %}
+                <div class="description">
+                    <form action="{{ path('login') }}" method="post">
+                        <label for="username" style="min-width: 120px; margin-left: -30px;">Username</label>
+                        <input type="text" name="_username" id="username" value="{{ last_username }}">
+                        <br>
+
+                        <label for="password">Password</label>
+                        <input type="text" name="_password" id="password">
+
+                        <button class="shopping-cart" type="submit" style="width: 330px;">Sign in</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4" style="visibility: hidden;">
+            <div class="metrics text-muted">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

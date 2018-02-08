@@ -1,16 +1,60 @@
-{% extends 'base.html.twig' %}
+{% extends 'default/main.html.twig' %}
+
+{% block title %}
+    Symfony Shop
+{% endblock %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="../../css/styles.css"/>
+    <link type="text/css" rel="stylesheet" href="../../css/bootstrap.css"/>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block header %}
+    New user
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-sm-4" style="visibility: hidden;">
+            <div class="metrics text-muted">
+                <div class="description">
+                </div>
+            </div>
+        </div>
+            <div class="col-sm-4">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <input type="submit" value="Create" />
+                {{ form_end(form) }}
+            </div>
+        <div class="col-sm-4" style="visibility: hidden;">
+            <div class="metrics text-muted">
+                <div class="description">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
 
 {% block body %}
     <h1>User creation</h1>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+    {{ form_widget(form) }}
+    <input type="submit" value="Create" />
     {{ form_end(form) }}
 
     <ul>
         <li>
             <a href="{{ path('user_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="/">Back to the home page</a>
         </li>
     </ul>
 {% endblock %}
