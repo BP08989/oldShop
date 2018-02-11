@@ -4,6 +4,6 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
 
 
-    b_pashkevich_user.login_srvice:
+    b_pashkevich_user.login_controller:
         class: BPashkevich\UserBundle\Controller\LoginController
         arguments: ['@security.authentication_utils']

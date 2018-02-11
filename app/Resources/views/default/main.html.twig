@@ -25,9 +25,17 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://127.0.0.1:8000/user/login">Profile</a></li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li><a href="/user/{{ app.user.id }}/show">Profile</a></li>
+                {% else %}
+                    <li><a href="/login">Profile</a></li>
+                {% endif %}
                 <li><a href="/cart">My cart</a></li>
-                <li><a href="#">Support</a></li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li><a href="/logout">Sign Out</a></li>
+                {% else %}
+                    <li><a href="/login">Sign In</a></li>
+                {% endif %}
             </ul>
             <form class="navbar-form navbar-right">
                 <input type="text" class="form-control" placeholder="Search...">

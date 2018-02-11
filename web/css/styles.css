@@ -444,3 +444,16 @@ li
   background: #e57d38;
   color: white;
 }
+
+.registration-button {
+  background: #ffcc33;
+  color: white;
+}
+
+.green-button {
+  background: #36ab0d;
+  font-size: large;
+  color: white;
+  min-width: 150px;
+  min-height: 40px;
+}

@@ -3,6 +3,7 @@
 namespace BPashkevich\UserBundle\Controller;
 
 use BPashkevich\UserBundle\Entity\User;
+use BPashkevich\UserBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +22,7 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('BPashkevichUserBundle:User')->findAll();
-
+        
         return $this->render('user/index.html.twig', array(
             'users' => $users,
         ));
@@ -34,17 +35,18 @@ class UserController extends Controller
     public function newAction(Request $request)
     {
         $user = new User();
-        $form = $this->createForm('BPashkevich\UserBundle\Form\UserType', $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if($this->get('b_pashkevich_user.user_srvice')->checkExistingUserFild($user) == true) {
                 $user->setRole('user');
+                $user->setPassword($this->container->get('security.password_encoder')->encodePassword($user, $user->getPassword()));
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
 
-                return $this->redirectToRoute('user_show', array('id' => $user->getId()));
+                return $this->redirectToRoute('login');
             }
         }
 

@@ -21,14 +21,17 @@ class LoginController extends Controller
 
         $lastUserName = $this->authenticationUtils->getLastUsername();
 
-//        var_dump($lastUserName);
-//        die();
-
         return $this->render('user/login.html.twig', array(
             'errors' => $errors,
             'last_username' => $lastUserName,
             'categories' => $this->get('b_pashkevich_product.category_srvice')->getAllCategories(),
         ));
     }
+
+    public function logoutAction()
+    {
+
+    }
+
 
 }

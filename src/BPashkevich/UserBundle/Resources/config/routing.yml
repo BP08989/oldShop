@@ -8,4 +8,8 @@ b_pashkevich_user_homepage:
 
 login:
     path:     /login
-    defaults: { _controller: BPashkevichUserBundle:Login:login }
+    defaults: { _controller: b_pashkevich_user.login_controller:loginAction }
+
+logout:
+    path:     /logout
+    defaults: { _controller: b_pashkevich_user.login_controller:logoutAction }

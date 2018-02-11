@@ -3,6 +3,7 @@
 namespace BPashkevich\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="BPashkevich\UserBundle\Repository\UserRepository")
+ * @UniqueEntity(fields={"email", "username", "phoneNumber"}, message="This one is already taken")
  */
 class User implements UserInterface
 {
@@ -33,7 +35,7 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=50)
+     * @ORM\Column(name="password", type="string", length=500)
      */
     private $password;
 
