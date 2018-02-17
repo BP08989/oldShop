@@ -17,3 +17,11 @@ b_pashkevich_product_productorder:
 b_pashkevich_product_homepage:
     path:     /
     defaults: { _controller: b_pashkevich_product.product_controller:indexAction }
+
+b_pashkevich_product_attribute:
+    resource: "@BPashkevichProductBundle/Resources/config/routing/attribute.yml"
+    prefix:   /attribute
+
+b_pashkevich_product_configurableproduct:
+        resource: "@BPashkevichProductBundle/Resources/config/routing/configurableproduct.yml"
+        prefix:   /configurableproduct

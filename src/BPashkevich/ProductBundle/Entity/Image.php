@@ -34,6 +34,12 @@ class Image
     private $product;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ConfigurableProduct", inversedBy="image")
+     */
+    private $configurableProduct;
+
+
+    /**
      * Get id.
      *
      * @return int
@@ -89,5 +95,29 @@ class Image
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Set configurableProduct.
+     *
+     * @param \BPashkevich\ProductBundle\Entity\ConfigurableProduct|null $configurableProduct
+     *
+     * @return Image
+     */
+    public function setConfigurableProduct(\BPashkevich\ProductBundle\Entity\ConfigurableProduct $configurableProduct = null)
+    {
+        $this->configurableProduct = $configurableProduct;
+
+        return $this;
+    }
+
+    /**
+     * Get configurableProduct.
+     *
+     * @return \BPashkevich\ProductBundle\Entity\ConfigurableProduct|null
+     */
+    public function getConfigurableProduct()
+    {
+        return $this->configurableProduct;
     }
 }

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Simple Product creation</h1>
+    <h1>Configurable Product creation</h1>
 
-    <form action="{{ path('product_save') }}" method="post">
+    <form action="{{ path('configurableproduct_save') }}" method="post">
 
         {% for requireAttribute in requireAttributes %}
             <label for="{{ requireAttribute.name }}" style="min-width: 120px;  margin-left: -10px;">{{ requireAttribute.name }}</label>
@@ -17,7 +17,7 @@
                 {% for category in categories %}
                     <option value="{{ category.id }}">{{ category.name }}</option>
                 {% endfor %}
-            </select></p>
+        </select></p>
         <br>
         <button class="shopping-cart" type="submit" style="width: 330px;">Create</button>
     </form>

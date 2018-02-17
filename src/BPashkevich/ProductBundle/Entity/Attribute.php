@@ -5,12 +5,12 @@ namespace BPashkevich\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Category
+ * Attribute
  *
- * @ORM\Table(name="category")
- * @ORM\Entity(repositoryClass="BPashkevich\ProductBundle\Repository\CategoryRepository")
+ * @ORM\Table(name="attribute")
+ * @ORM\Entity(repositoryClass="BPashkevich\ProductBundle\Repository\AttributeRepository")
  */
-class Category
+class Attribute
 {
     /**
      * @var int
@@ -24,25 +24,40 @@ class Category
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="сode", type="string", length=255, unique=true)
+     */
+    private $code;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+     * @var boolean
+     *
+     * @ORM\Column(name="require", type="boolean")
      */
-    private $products;
+    private $require;
 
     /**
-     * @ORM\OneToMany(targetEntity="ConfigurableProduct", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="AttributeValue", mappedBy="attribute")
+     */
+    private $attributeValues;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="ConfigurableProduct", mappedBy="attribures")
      */
     private $configurableProducts;
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->attributeValues = new \Doctrine\Common\Collections\ArrayCollection();
         $this->configurableProducts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -57,11 +72,35 @@ class Category
     }
 
     /**
+     * Set code.
+     *
+     * @param string $code
+     *
+     * @return Attribute
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code.
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
      * Set name.
      *
      * @param string $name
      *
-     * @return Category
+     * @return Attribute
      */
     public function setName($name)
     {
@@ -79,41 +118,42 @@ class Category
     {
         return $this->name;
     }
+    
 
     /**
-     * Add product.
+     * Add attributeValue.
      *
-     * @param \BPashkevich\ProductBundle\Entity\Product $product
+     * @param \BPashkevich\ProductBundle\Entity\AttributeValue $attributeValue
      *
-     * @return Category
+     * @return Attribute
      */
-    public function addProduct(\BPashkevich\ProductBundle\Entity\Product $product)
+    public function addAttributeValue(\BPashkevich\ProductBundle\Entity\AttributeValue $attributeValue)
     {
-        $this->products[] = $product;
+        $this->attributeValues[] = $attributeValue;
 
         return $this;
     }
 
     /**
-     * Remove product.
+     * Remove attributeValue.
      *
-     * @param \BPashkevich\ProductBundle\Entity\Product $product
+     * @param \BPashkevich\ProductBundle\Entity\AttributeValue $attributeValue
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeProduct(\BPashkevich\ProductBundle\Entity\Product $product)
+    public function removeAttributeValue(\BPashkevich\ProductBundle\Entity\AttributeValue $attributeValue)
     {
-        return $this->products->removeElement($product);
+        return $this->attributeValues->removeElement($attributeValue);
     }
 
     /**
-     * Get products.
+     * Get attributeValues.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProducts()
+    public function getAttributeValues()
     {
-        return $this->products;
+        return $this->attributeValues;
     }
 
     /**
@@ -121,7 +161,7 @@ class Category
      *
      * @param \BPashkevich\ProductBundle\Entity\ConfigurableProduct $configurableProduct
      *
-     * @return Category
+     * @return Attribute
      */
     public function addConfigurableProduct(\BPashkevich\ProductBundle\Entity\ConfigurableProduct $configurableProduct)
     {
@@ -150,5 +190,29 @@ class Category
     public function getConfigurableProducts()
     {
         return $this->configurableProducts;
+    }
+
+    /**
+     * Set require.
+     *
+     * @param bool $require
+     *
+     * @return Attribute
+     */
+    public function setRequire($require)
+    {
+        $this->require = $require;
+
+        return $this;
+    }
+
+    /**
+     * Get require.
+     *
+     * @return bool
+     */
+    public function getRequire()
+    {
+        return $this->require;
     }
 }

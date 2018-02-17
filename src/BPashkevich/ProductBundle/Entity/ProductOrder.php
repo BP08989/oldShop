@@ -27,6 +27,11 @@ class ProductOrder
     private $products;
 
     /**
+     * @ORM\ManyToMany(targetEntity="ConfigurableProduct", mappedBy="productOrders")
+     */
+    private $configurableProducts;
+
+    /**
      * @ORM\ManyToOne(targetEntity="BPashkevich\UserBundle\Entity\User", inversedBy="productOrder")
      */
     private $users;
@@ -37,6 +42,7 @@ class ProductOrder
     public function __construct()
     {
         $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->configurableProducts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -58,7 +64,6 @@ class ProductOrder
      */
     public function addProduct(\BPashkevich\ProductBundle\Entity\Product $product)
     {
-        $product->addProductOrder($this);
         $this->products[] = $product;
 
         return $this;
@@ -84,6 +89,42 @@ class ProductOrder
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * Add configurableProduct.
+     *
+     * @param \BPashkevich\ProductBundle\Entity\ConfigurableProduct $configurableProduct
+     *
+     * @return ProductOrder
+     */
+    public function addConfigurableProduct(\BPashkevich\ProductBundle\Entity\ConfigurableProduct $configurableProduct)
+    {
+        $this->configurableProducts[] = $configurableProduct;
+
+        return $this;
+    }
+
+    /**
+     * Remove configurableProduct.
+     *
+     * @param \BPashkevich\ProductBundle\Entity\ConfigurableProduct $configurableProduct
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeConfigurableProduct(\BPashkevich\ProductBundle\Entity\ConfigurableProduct $configurableProduct)
+    {
+        return $this->configurableProducts->removeElement($configurableProduct);
+    }
+
+    /**
+     * Get configurableProducts.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConfigurableProducts()
+    {
+        return $this->configurableProducts;
     }
 
     /**

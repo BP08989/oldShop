@@ -13,6 +13,11 @@ product_new:
     defaults: { _controller: b_pashkevich_product.product_controller:newAction }
     methods:  [GET, POST]
 
+product_save:
+    path:     /save
+    defaults: { _controller: b_pashkevich_product.product_controller:saveAction }
+    methods:  [POST]
+
 product_edit:
     path:     /{id}/edit
     defaults: { _controller: b_pashkevich_product.product_controller:editAction }

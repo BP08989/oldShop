@@ -1,0 +1,29 @@
+configurableproduct_index:
+    path:     /
+    defaults: { _controller: "BPashkevichProductBundle:ConfigurableProduct:index" }
+    methods:  GET
+
+configurableproduct_show:
+    path:     /{id}/show
+    defaults: { _controller: "BPashkevichProductBundle:ConfigurableProduct:show" }
+    methods:  GET
+
+configurableproduct_new:
+    path:     /new
+    defaults: { _controller: "BPashkevichProductBundle:ConfigurableProduct:new" }
+    methods:  [GET, POST]
+
+configurableproduct_save:
+    path:     /save
+    defaults: { _controller: "BPashkevichProductBundle:ConfigurableProduct:save" }
+    methods:  [POST]
+
+configurableproduct_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BPashkevichProductBundle:ConfigurableProduct:edit" }
+    methods:  [GET, POST]
+
+configurableproduct_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BPashkevichProductBundle:ConfigurableProduct:delete" }
+    methods:  DELETE

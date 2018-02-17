@@ -5,12 +5,12 @@ namespace BPashkevich\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Product
+ * ConfigurableProduct
  *
- * @ORM\Table(name="product")
- * @ORM\Entity(repositoryClass="BPashkevich\ProductBundle\Repository\ProductRepository")
+ * @ORM\Table(name="configurable_product")
+ * @ORM\Entity(repositoryClass="BPashkevich\ProductBundle\Repository\ConfigurableProductRepository")
  */
-class Product
+class ConfigurableProduct
 {
     /**
      * @var int
@@ -22,20 +22,24 @@ class Product
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="product")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="configurableProduct")
      */
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="Image", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="Image", mappedBy="configurableProduct")
      */
     private $images;
 
     /**
-     * @ORM\ManyToMany(targetEntity="ProductOrder", inversedBy="products")
+     * @ORM\ManyToMany(targetEntity="ProductOrder", inversedBy="configurableProduct")
      */
     private $productOrders;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Attribute", inversedBy="configurableProduct")
+     */
+    private $attribures;
     /**
      * Constructor
      */
@@ -43,6 +47,7 @@ class Product
     {
         $this->images = new \Doctrine\Common\Collections\ArrayCollection();
         $this->productOrders = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->attribures = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -60,7 +65,7 @@ class Product
      *
      * @param \BPashkevich\ProductBundle\Entity\Category|null $category
      *
-     * @return Product
+     * @return ConfigurableProduct
      */
     public function setCategory(\BPashkevich\ProductBundle\Entity\Category $category = null)
     {
@@ -84,7 +89,7 @@ class Product
      *
      * @param \BPashkevich\ProductBundle\Entity\Image $image
      *
-     * @return Product
+     * @return ConfigurableProduct
      */
     public function addImage(\BPashkevich\ProductBundle\Entity\Image $image)
     {
@@ -120,7 +125,7 @@ class Product
      *
      * @param \BPashkevich\ProductBundle\Entity\ProductOrder $productOrder
      *
-     * @return Product
+     * @return ConfigurableProduct
      */
     public function addProductOrder(\BPashkevich\ProductBundle\Entity\ProductOrder $productOrder)
     {
@@ -149,5 +154,41 @@ class Product
     public function getProductOrders()
     {
         return $this->productOrders;
+    }
+
+    /**
+     * Add attribure.
+     *
+     * @param \BPashkevich\ProductBundle\Entity\Attribute $attribure
+     *
+     * @return ConfigurableProduct
+     */
+    public function addAttribure(\BPashkevich\ProductBundle\Entity\Attribute $attribure)
+    {
+        $this->attribures[] = $attribure;
+
+        return $this;
+    }
+
+    /**
+     * Remove attribure.
+     *
+     * @param \BPashkevich\ProductBundle\Entity\Attribute $attribure
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeAttribure(\BPashkevich\ProductBundle\Entity\Attribute $attribure)
+    {
+        return $this->attribures->removeElement($attribure);
+    }
+
+    /**
+     * Get attribures.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAttribures()
+    {
+        return $this->attribures;
     }
 }
