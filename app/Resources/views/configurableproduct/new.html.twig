@@ -20,7 +20,7 @@
             </select></p>
 
         {% for notRequireAttribute in notRequireAttributes %}
-            <input type="checkbox" name="{{ notRequireAttribute.id }}" value="{{ notRequireAttribute.name }}">
+            <input type="checkbox" name="{{ notRequireAttribute.id }}" id="{{ notRequireAttribute.name }}">
              {{ notRequireAttribute.name }}<br>
         {% endfor %}
 

@@ -2,25 +2,21 @@
 
 namespace BPashkevich\ProductBundle\Services;
 
-use BPashkevich\ProductBundle\Entity\Product;
-use Symfony\Component\HttpFoundation\Session\Session;
+use BPashkevich\ProductBundle\Entity\ConfigurableProduct;
 
-class ProductService
+class ConfigurableProductService
 {
     private $em;
-
-    private $session;
 
     private $dbService;
 
     private  $repository;
 
-    public function __construct(\Doctrine\ORM\EntityManager $em, Session $session, DBService $dbService)
+    public function __construct(\Doctrine\ORM\EntityManager $em, DBService $dbService)
     {
         $this->em = $em;
-        $this->session = $session;
         $this->dbService = $dbService;
-        $this->repository = $this->em->getRepository('BPashkevichProductBundle:Product');
+        $this->repository = $this->em->getRepository('BPashkevichProductBundle:ConfigurableProduct');
     }
 
     public function getAllProduct()
@@ -33,7 +29,12 @@ class ProductService
         return  $this->repository->findBy( array('category' => $category));
     }
 
-    public function createProduct(Product $product, array $attributes, array $attributeValues)
+    public function findProducts(array $params)
+    {
+        return $this->repository->findBy($params);
+    }
+
+    public function createProduct(ConfigurableProduct $product, array $attributes, array $attributeValues)
     {
         if(count($attributes) == count($attributeValues)){
             $queryBuilder = $this->dbService->getQueryBuilder();
@@ -41,7 +42,7 @@ class ProductService
             $this->em->persist($product);
             $this->em->flush();
             for ($i=0; $i<count($attributes); $i++) {
-                $queryBuilder->insert('product_attribute_value')
+                $queryBuilder->insert('configurable_product_attribute_value')
                     ->setValue('product_id', $product->getId())
                     ->setValue('attribute_id', $attributes[$i]->getId())
                     ->setValue('value_id', $attributeValues[$i]->getId());
@@ -52,13 +53,13 @@ class ProductService
         return null;
     }
 
-    public function editProduct(Product $product)
+    public function editProduct(ConfigurableProduct $product)
     {
         $this->em->flush();
         return $product;
     }
 
-    public function deleteProduct(Product $product)
+    public function deleteProduct(ConfigurableProduct $product)
     {
         $this->em->remove($product);
         $this->em->flush();

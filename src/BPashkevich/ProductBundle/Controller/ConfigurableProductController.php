@@ -6,6 +6,11 @@ use BPashkevich\ProductBundle\Entity\AttributeValue;
 use BPashkevich\ProductBundle\Entity\Category;
 use BPashkevich\ProductBundle\Entity\ConfigurableProduct;
 use BPashkevich\ProductBundle\Entity\Image;
+use BPashkevich\ProductBundle\Services\AttributeService;
+use BPashkevich\ProductBundle\Services\AttributeValueService;
+use BPashkevich\ProductBundle\Services\CategoryService;
+use BPashkevich\ProductBundle\Services\ConfigurableProductService;
+use BPashkevich\ProductBundle\Services\ImageService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,18 +20,36 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ConfigurableProductController extends Controller
 {
+    private $configurableProductService;
+
+    private $categoryService;
+
+    private $attributeService;
+
+    private $attributeValueService;
+
+    private $imageService;
+
+    public function __construct(ConfigurableProductService $configurableProductService, CategoryService $categoryService,
+                                ImageService $imageService, AttributeService $attributeService,
+                                AttributeValueService $attributeValueService)
+    {
+        $this->configurableProductService = $configurableProductService;
+        $this->categoryService = $categoryService;
+        $this->attributeService = $attributeService;
+        $this->attributeValueService = $attributeValueService;
+        $this->imageService = $imageService;
+    }
+
     /**
      * Lists all configurableProduct entities.
      *
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $configurableProducts = $em->getRepository('BPashkevichProductBundle:ConfigurableProduct')->findAll();
-
-        return $this->render('configurableproduct/index.html.twig', array(
-            'configurableProducts' => $configurableProducts,
+        return $this->render('product/index.html.twig', array(
+            'products' => $this->configurableProductService->getAllProduct(),
+            'categories' => $this->categoryService->getAllCategories(),
         ));
     }
 
@@ -36,26 +59,16 @@ class ConfigurableProductController extends Controller
      */
     public function newAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $requireAttributes = $em->getRepository('BPashkevichProductBundle:Attribute')->findBy(array(
-            'require' => 1,
-        ));
-
-        $notRequireAttributes = $em->getRepository('BPashkevichProductBundle:Attribute')->findBy(array(
-            'require' => 0,
-        ));
-
         return $this->render('configurableproduct/new.html.twig', array(
-            'requireAttributes' => $requireAttributes,
-            'notRequireAttributes' => $notRequireAttributes,
-            'categories' => $em->getRepository('BPashkevichProductBundle:Category')->findAll(),
+            'requireAttributes' => $this->attributeService->findAttributes(array('require' => 1,)),
+            'notRequireAttributes' => $this->attributeService->findAttributes(array('require' => 0,)),
+            'categories' => $this->categoryService->getAllCategories(),
         ));
     }
 
     public function saveAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $product = new ConfigurableProduct();
         $requestData = $request->request->all();
         $requestDataKeys = array_keys($requestData);
         $attributes = [];
@@ -67,73 +80,50 @@ class ConfigurableProductController extends Controller
         foreach ($requestDataKeys as $key){
             switch ($key){
                 case "category":
-                    $category = $em->getRepository('BPashkevichProductBundle:Category')->find($requestData[$key]);
-                    unset($requestDataKeys[$counter]);
-                    sort($requestDataKeys);
+                    $category = $this->categoryService->findCategories(array(
+                        'id' => $requestData[$key],
+                    ))[0];
                     break;
                 case "image":
                     $image->setUrl($requestData[$key]);
-                    unset($requestDataKeys[$counter]);
-                    sort($requestDataKeys);
                     break;
                 default:
-                    $attributes[$counter] = $em->getRepository('BPashkevichProductBundle:Attribute')->find($key);
+                    $attributes[$counter] = $this->attributeService->findAttributes(array('id' => $key,))[0];
                     $counter++;
                     break;
             }
         }
 
+        unset($requestData['category']);
+        unset($requestData['image']);
+
         $counter=0;
-        foreach ($requestData as $value){
-                    if($attributes[$counter]->getRequire()){
-                        $attributeValue = new AttributeValue();
-                        $attributeValue->setAttribute($attributes[$counter]);
-                        $attributeValue->setValue($value);
-                        $em->persist($attributeValue);
-                        $em->flush();
-                        $attributesValues[$counter] = $attributeValue;
-                    }
-                    else{
-                        var_dump($attributes[$counter]);
-                        die();
-                    }
-                    $counter++;
+        foreach ($requestData as $attribute){
+            if($attributes[$counter]->getRequire()){
+                $attributeValue = new AttributeValue();
+                $attributeValue->setAttribute($attributes[$counter]);
+                $attributeValue->setValue($attribute);
+                $this->attributeValueService->createAttributeValue($attributeValue);
+                $attributesValues[$counter] = $attributeValue;
+            }
+            else{
+                $product->addAttribure($attributes[$counter]);
+                unset($attributes[$counter]);
+            }
+            $counter++;
         }
+        sort($attributes);
 
-
-        $product = new ConfigurableProduct();
         $product->setCategory($category);
-        $em->persist($product);
-        $em->flush();
-
+        $this->configurableProductService->createProduct($product, $attributes, $attributesValues);
         $image->setConfigurableProduct($product);
+        $this->imageService->createImage($image);
 
-        $em->persist($image);
-        $em->flush();
-
-        $config = new \Doctrine\DBAL\Configuration();
-        $connectionParams = array(
-            'dbname' => 'oldShop',
-            'user' => 'root',
-            'password' => 'root',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        );
-        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
-        $queryBuilder = $conn->createQueryBuilder();
-
-        for ($i=0; $i<$counter; $i++) {
-            $queryBuilder->insert('configurable_product_attribute_value')
-                ->setValue('product_id', $product->getId())
-                ->setValue('attribute_id', $attributes[$i]->getId())
-                ->setValue('value_id', $attributesValues[$i]->getId());
-            $queryBuilder->execute();
-        }
-
-        var_dump($attributes);
+        var_dump($product);
         die();
-        return $this->redirectToRoute('product_show', array('id' => $product->getId()));
 
+
+        return $this->redirectToRoute('product_show', array('id' => $product->getId()));
     }
 
     /**

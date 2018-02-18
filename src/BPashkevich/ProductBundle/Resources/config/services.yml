@@ -15,6 +15,10 @@ services:
         class: BPashkevich\ProductBundle\Services\ProductService
         arguments: ['@doctrine.orm.entity_manager', '@session', '@b_pashkevich_product.db_service']
 
+    b_pashkevich_product.configurable_product_srvice:
+        class: BPashkevich\ProductBundle\Services\ConfigurableProductService
+        arguments: ['@doctrine.orm.entity_manager', '@b_pashkevich_product.db_service']
+
     b_pashkevich_product.category_srvice:
         class: BPashkevich\ProductBundle\Services\CategoryService
         arguments: ['@doctrine.orm.entity_manager']
@@ -22,6 +26,12 @@ services:
 #    b_pashkevich_product.productOrder_srvice:
 #        class: BPashkevich\ProductBundle\Services\ProductOrderService
 #        arguments: ['@doctrine.orm.entity_manager']
+
+    b_pashkevich_product.configurable_product_controller:
+        class: BPashkevich\ProductBundle\Controller\ConfigurableProductController
+        arguments: ['@b_pashkevich_product.configurable_product_srvice', '@b_pashkevich_product.category_srvice',
+         '@b_pashkevich_product.image_srvice', '@b_pashkevich_product.attribure_srvice',
+          '@b_pashkevich_product.attribure_value_srvice',]
 
     b_pashkevich_product.product_controller:
         class: BPashkevich\ProductBundle\Controller\ProductController

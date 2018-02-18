@@ -99,7 +99,6 @@ class ProductController extends Controller
 
         unset($requestData['category']);
         unset($requestData['image']);
-        sort($requestData);
 
         $counter=0;
         foreach ($requestData as $attribute){
@@ -115,10 +114,6 @@ class ProductController extends Controller
         $this->productService->createProduct($product, $attributes, $attributesValues);
         $image->setProduct($product);
         $this->imageService->createImage($image);
-
-
-        var_dump($attributes);
-        die();
         return $this->redirectToRoute('product_show', array('id' => $product->getId()));
     }
 
