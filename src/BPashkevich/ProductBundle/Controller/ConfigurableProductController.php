@@ -56,7 +56,6 @@ class ConfigurableProductController extends Controller
     public function saveAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
         $requestData = $request->request->all();
         $requestDataKeys = array_keys($requestData);
         $attributes = [];
@@ -68,55 +67,72 @@ class ConfigurableProductController extends Controller
         foreach ($requestDataKeys as $key){
             switch ($key){
                 case "category":
-                    $category = $em->getRepository('BPashkevichProductBundle:Category')->find($requestData[$requestDataKeys[$counter]]);
+                    $category = $em->getRepository('BPashkevichProductBundle:Category')->find($requestData[$key]);
+                    unset($requestDataKeys[$counter]);
+                    sort($requestDataKeys);
                     break;
                 case "image":
-                    $image->setUrl($requestData[$requestDataKeys[$counter]]);
+                    $image->setUrl($requestData[$key]);
+                    unset($requestDataKeys[$counter]);
+                    sort($requestDataKeys);
                     break;
                 default:
                     $attributes[$counter] = $em->getRepository('BPashkevichProductBundle:Attribute')->find($key);
-
+                    $counter++;
                     break;
             }
-            $counter++;
         }
 
         $counter=0;
-        foreach ($requestData as $attribute){
-            switch ($requestDataKeys[$counter]){
-                case "category":
-                    break;
-                case "image":
-                    break;
-                default:
-                    $attributeValue = new AttributeValue();
-                    $attributeValue->setAttribute($attributes[$counter]);
-                    $attributeValue->setValue($attribute);
-                    $em->persist($attributeValue);
-                    $em->flush();
-                    $attributesValues[$counter] = $em->getRepository('BPashkevichProductBundle:AttributeValue')->findOneBy(array(
-                        'value' => $attribute,
-                    ));
-                    break;
-            }
-
-            $counter++;
+        foreach ($requestData as $value){
+                    if($attributes[$counter]->getRequire()){
+                        $attributeValue = new AttributeValue();
+                        $attributeValue->setAttribute($attributes[$counter]);
+                        $attributeValue->setValue($value);
+                        $em->persist($attributeValue);
+                        $em->flush();
+                        $attributesValues[$counter] = $attributeValue;
+                    }
+                    else{
+                        var_dump($attributes[$counter]);
+                        die();
+                    }
+                    $counter++;
         }
 
-        $configurableProduct = new Configurableproduct();
-        $configurableProduct->setCategory($category);
-        $em->persist($configurableProduct);
+
+        $product = new ConfigurableProduct();
+        $product->setCategory($category);
+        $em->persist($product);
         $em->flush();
 
-        $image->setConfigurableProduct($configurableProduct);
+        $image->setConfigurableProduct($product);
 
         $em->persist($image);
         $em->flush();
 
-        var_dump($category);
-        die();
+        $config = new \Doctrine\DBAL\Configuration();
+        $connectionParams = array(
+            'dbname' => 'oldShop',
+            'user' => 'root',
+            'password' => 'root',
+            'host' => 'localhost',
+            'driver' => 'pdo_mysql',
+        );
+        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+        $queryBuilder = $conn->createQueryBuilder();
 
-        return $this->redirectToRoute('configurableproduct_show', array('id' => $configurableProduct->getId()));
+        for ($i=0; $i<$counter; $i++) {
+            $queryBuilder->insert('configurable_product_attribute_value')
+                ->setValue('product_id', $product->getId())
+                ->setValue('attribute_id', $attributes[$i]->getId())
+                ->setValue('value_id', $attributesValues[$i]->getId());
+            $queryBuilder->execute();
+        }
+
+        var_dump($attributes);
+        die();
+        return $this->redirectToRoute('product_show', array('id' => $product->getId()));
 
     }
 

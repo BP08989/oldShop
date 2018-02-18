@@ -17,8 +17,13 @@
                 {% for category in categories %}
                     <option value="{{ category.id }}">{{ category.name }}</option>
                 {% endfor %}
-        </select></p>
-        <br>
+            </select></p>
+
+        {% for notRequireAttribute in notRequireAttributes %}
+            <input type="checkbox" name="{{ notRequireAttribute.id }}" value="{{ notRequireAttribute.name }}">
+             {{ notRequireAttribute.name }}<br>
+        {% endfor %}
+
         <button class="shopping-cart" type="submit" style="width: 330px;">Create</button>
     </form>
 

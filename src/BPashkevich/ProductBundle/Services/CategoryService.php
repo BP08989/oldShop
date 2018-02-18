@@ -8,18 +8,22 @@ class CategoryService
 {
     private $em;
 
+    private $repository;
+
     public function __construct(\Doctrine\ORM\EntityManager $em)
     {
         $this->em = $em;
+        $this->repository = $this->em->getRepository('BPashkevichProductBundle:Category');
     }
 
     public function getAllCategories()
     {
-        return $this->em->getRepository('BPashkevichProductBundle:Category')->findAll();
+        return $this->repository->findAll();
     }
 
-    public function getCategoryById($id){
-        return $this->em->getRepository('BPashkevichProductBundle:Category')->find($id);
+    public function findCategories(array $params)
+    {
+        return $this->repository->findBy($params);
     }
 
     public function createCategory(Category $category)

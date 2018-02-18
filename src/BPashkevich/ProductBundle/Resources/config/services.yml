@@ -1,27 +1,41 @@
 services:
+    b_pashkevich_product.attribure_srvice:
+        class: BPashkevich\ProductBundle\Services\AttributeService
+        arguments: ['@doctrine.orm.entity_manager']
+
+    b_pashkevich_product.attribure_value_srvice:
+        class: BPashkevich\ProductBundle\Services\AttributeValueService
+        arguments: ['@doctrine.orm.entity_manager']
+
+    b_pashkevich_product.image_srvice:
+        class: BPashkevich\ProductBundle\Services\ImageService
+        arguments: ['@doctrine.orm.entity_manager']
+
     b_pashkevich_product.product_srvice:
         class: BPashkevich\ProductBundle\Services\ProductService
-        arguments: ['@doctrine.orm.entity_manager', '@session']
+        arguments: ['@doctrine.orm.entity_manager', '@session', '@b_pashkevich_product.db_service']
 
     b_pashkevich_product.category_srvice:
         class: BPashkevich\ProductBundle\Services\CategoryService
         arguments: ['@doctrine.orm.entity_manager']
 
-#    b_pashkevich_product.image_srvice:
-#        class: BPashkevich\ProductBundle\Services\ImageService
-#        arguments: ['@doctrine.orm.entity_manager']
-#
 #    b_pashkevich_product.productOrder_srvice:
 #        class: BPashkevich\ProductBundle\Services\ProductOrderService
 #        arguments: ['@doctrine.orm.entity_manager']
 
     b_pashkevich_product.product_controller:
         class: BPashkevich\ProductBundle\Controller\ProductController
-        arguments: ['@b_pashkevich_product.product_srvice', '@b_pashkevich_product.category_srvice']
+        arguments: ['@b_pashkevich_product.product_srvice', '@b_pashkevich_product.category_srvice',
+         '@b_pashkevich_product.image_srvice', '@b_pashkevich_product.attribure_srvice',
+          '@b_pashkevich_product.attribure_value_srvice',]
 
     b_pashkevich_product.category_controller:
         class: BPashkevich\ProductBundle\Controller\CategoryController
         arguments: ['@b_pashkevich_product.category_srvice']
+
+    b_pashkevich_product.db_service:
+        class: BPashkevich\ProductBundle\Services\DBService
+        arguments: []
 
 #    # Fixtures services
 #    b_pashkevich_product.fixture:

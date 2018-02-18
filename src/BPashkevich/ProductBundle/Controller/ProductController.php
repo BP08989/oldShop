@@ -3,6 +3,9 @@
 namespace BPashkevich\ProductBundle\Controller;
 
 use BPashkevich\ProductBundle\Entity\Product;
+use BPashkevich\ProductBundle\Services\AttributeService;
+use BPashkevich\ProductBundle\Services\AttributeValueService;
+use BPashkevich\ProductBundle\Services\ImageService;
 use BPashkevich\ProductBundle\Services\ProductService;
 use BPashkevich\ProductBundle\Services\CategoryService;
 use Doctrine\DBAL\DriverManager;
@@ -19,6 +22,27 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ProductController extends Controller
 {
+    private $productService;
+
+    private $categoryService;
+
+    private $attributeService;
+
+    private $attributeValueService;
+
+    private $imageService;
+
+    public function __construct(ProductService $productService, CategoryService $categoryService,
+                                ImageService $imageService, AttributeService $attributeService,
+                                AttributeValueService $attributeValueService)
+    {
+        $this->productService = $productService;
+        $this->categoryService = $categoryService;
+        $this->attributeService = $attributeService;
+        $this->attributeValueService = $attributeValueService;
+        $this->imageService = $imageService;
+    }
+
     /**
      * Lists all product entities.
      *
@@ -26,18 +50,9 @@ class ProductController extends Controller
 
     public function indexAction()
     {
-//        $images = $this->getDoctrine()
-//            ->getRepository("BPashkevichProductBundle:Product")
-//            ->find(1)->getImages()->get(0)->getUrl();
-
-//        $urls = [];
-//        foreach($products as $product) {
-//            $urls[] = $product->getImages()->get(0)->getUrl();
-//        }
-
         return $this->render('product/index.html.twig', array(
-            'products' => $this->get('b_pashkevich_product.product_srvice')->getAllProduct(),
-            'categories' => $this->get('b_pashkevich_product.category_srvice')->getAllCategories(),
+            'products' => $this->productService->getAllProduct(),
+            'categories' => $this->categoryService->getAllCategories(),
         ));
     }
 
@@ -48,21 +63,15 @@ class ProductController extends Controller
 
     public function newAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $requireAttributes = $em->getRepository('BPashkevichProductBundle:Attribute')->findBy(array(
-            'require' => 1,
-        ));
-
         return $this->render('product/new.html.twig', array(
-            'requireAttributes' => $requireAttributes,
-            'categories' => $em->getRepository('BPashkevichProductBundle:Category')->findAll(),
+            'requireAttributes' => $this->attributeService->findAttributes(array('require' => 1,)),
+            'categories' => $this->categoryService->getAllCategories(),
         ));
     }
 
     public function saveAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $product = new Product();
         $requestData = $request->request->all();
         $requestDataKeys = array_keys($requestData);
         $attributes = [];
@@ -74,72 +83,43 @@ class ProductController extends Controller
         foreach ($requestDataKeys as $key){
             switch ($key){
                 case "category":
-                    $category = $em->getRepository('BPashkevichProductBundle:Category')->find($requestData[$requestDataKeys[$counter]]);
+                    $category = $this->categoryService->findCategories(array(
+                        'id' => $requestData[$requestDataKeys[$counter]],
+                        ))[0];
                     break;
                 case "image":
                     $image->setUrl($requestData[$requestDataKeys[$counter]]);
                     break;
                 default:
-                    $attributes[$counter] = $em->getRepository('BPashkevichProductBundle:Attribute')->find($key);
-
+                    $attributes[$counter] = $this->attributeService->findAttributes(array('id' => $key,))[0];
                     break;
             }
             $counter++;
         }
 
+        unset($requestData['category']);
+        unset($requestData['image']);
+        sort($requestData);
+
         $counter=0;
         foreach ($requestData as $attribute){
-            switch ($requestDataKeys[$counter]){
-                case "category":
-                    break;
-                case "image":
-                    break;
-                default:
-                    $attributeValue = new AttributeValue();
-                    $attributeValue->setAttribute($attributes[$counter]);
-                    $attributeValue->setValue($attribute);
-                    $em->persist($attributeValue);
-                    $em->flush();
-                    $attributesValues[$counter] = $attributeValue;
-                    $counter++;
-                    break;
-            }
+            $attributeValue = new AttributeValue();
+            $attributeValue->setAttribute($attributes[$counter]);
+            $attributeValue->setValue($attribute);
+            $this->attributeValueService->createAttributeValue($attributeValue);
+            $attributesValues[$counter] = $attributeValue;
+            $counter++;
         }
 
-        $product = new Product();
         $product->setCategory($category);
-        $em->persist($product);
-        $em->flush();
-
+        $this->productService->createProduct($product, $attributes, $attributesValues);
         $image->setProduct($product);
+        $this->imageService->createImage($image);
 
-        $em->persist($image);
-        $em->flush();
 
-        $config = new \Doctrine\DBAL\Configuration();
-        $connectionParams = array(
-            'dbname' => 'oldShop',
-            'user' => 'root',
-            'password' => 'root',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
-        );
-        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
-        $queryBuilder = $conn->createQueryBuilder();
-
-        for ($i=0; $i<$counter; $i++) {
-            $queryBuilder->insert('product_attribute_value')
-                ->setValue('product_id', $product->getId())
-                ->setValue('attribute_id', $attributes[$i]->getId())
-                ->setValue('value_id', $attributesValues[$i]->getId());
-            $queryBuilder->execute();
-        }
-
-        var_dump($category);
+        var_dump($attributes);
         die();
-
         return $this->redirectToRoute('product_show', array('id' => $product->getId()));
-
     }
 
     /**
