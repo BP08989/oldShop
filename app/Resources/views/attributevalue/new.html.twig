@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Attributevalue creation</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    <p>
+        <select size="1" name="attribute">
+            {% for attribute in attributes %}
+                <option value="{{ attribute.id }}">{{ attribute.name }}</option>
+            {% endfor %}
+        </select>
+    </p>
+        <input type="submit" value="Create" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('attributevalue_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

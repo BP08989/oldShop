@@ -38,9 +38,9 @@ class Attribute
     /**
      * @var boolean
      *
-     * @ORM\Column(name="require", type="boolean")
+     * @ORM\Column(name="mandatory", type="boolean")
      */
-    private $require;
+    private $mandatory;
 
     /**
      * @ORM\OneToMany(targetEntity="AttributeValue", mappedBy="attribute")
@@ -214,5 +214,29 @@ class Attribute
     public function getRequire()
     {
         return $this->require;
+    }
+
+    /**
+     * Set mandatory.
+     *
+     * @param bool $mandatory
+     *
+     * @return Attribute
+     */
+    public function setMandatory($mandatory)
+    {
+        $this->mandatory = $mandatory;
+
+        return $this;
+    }
+
+    /**
+     * Get mandatory.
+     *
+     * @return bool
+     */
+    public function getMandatory()
+    {
+        return $this->mandatory;
     }
 }

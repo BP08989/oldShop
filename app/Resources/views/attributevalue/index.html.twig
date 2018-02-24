@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Attributevalues list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Value</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attributeValue in attributeValues %}
+            <tr>
+                <td><a href="{{ path('attributevalue_show', { 'id': attributeValue.id }) }}">{{ attributeValue.id }}</a></td>
+                <td>{{ attributeValue.value }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('attributevalue_show', { 'id': attributeValue.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('attributevalue_edit', { 'id': attributeValue.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('attributevalue_new') }}">Create a new attributeValue</a>
+        </li>
+    </ul>
+{% endblock %}

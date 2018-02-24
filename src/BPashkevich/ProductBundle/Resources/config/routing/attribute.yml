@@ -1,24 +1,24 @@
 attribute_index:
     path:     /
-    defaults: { _controller: "BPashkevichProductBundle:Attribute:index" }
+    defaults: { _controller: b_pashkevich_product.attribute_controller:indexAction }
     methods:  GET
 
 attribute_show:
     path:     /{id}/show
-    defaults: { _controller: "BPashkevichProductBundle:Attribute:show" }
+    defaults: { _controller: b_pashkevich_product.attribute_controller:showAction }
     methods:  GET
 
 attribute_new:
     path:     /new
-    defaults: { _controller: "BPashkevichProductBundle:Attribute:new" }
+    defaults: { _controller: b_pashkevich_product.attribute_controller:newAction }
     methods:  [GET, POST]
 
 attribute_edit:
     path:     /{id}/edit
-    defaults: { _controller: "BPashkevichProductBundle:Attribute:edit" }
+    defaults: { _controller: b_pashkevich_product.attribute_controller:editAction }
     methods:  [GET, POST]
 
 attribute_delete:
     path:     /{id}/delete
-    defaults: { _controller: "BPashkevichProductBundle:Attribute:delete" }
+    defaults: { _controller: b_pashkevich_product.attribute_controller:deleteAction }
     methods:  DELETE

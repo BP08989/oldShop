@@ -23,6 +23,11 @@ configurableproduct_edit:
     defaults: { _controller: b_pashkevich_product.configurable_product_controller:editAction }
     methods:  [GET, POST]
 
+configurableproduct_update:
+    path:     /{id}/update
+    defaults: { _controller: b_pashkevich_product.configurable_product_controller:updateAction }
+    methods:  [GET, POST]
+
 configurableproduct_delete:
     path:     /{id}/delete
     defaults: { _controller: b_pashkevich_product.configurable_product_controller:deleteAction }

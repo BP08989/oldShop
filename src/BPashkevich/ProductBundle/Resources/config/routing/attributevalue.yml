@@ -1,0 +1,24 @@
+attributevalue_index:
+    path:     /
+    defaults: { _controller:  b_pashkevich_product.attribute_value_controller:indexAction }
+    methods:  GET
+
+attributevalue_show:
+    path:     /{id}/show
+    defaults: { _controller: b_pashkevich_product.attribute_value_controller:showAction }
+    methods:  GET
+
+attributevalue_new:
+    path:     /new
+    defaults: { _controller: b_pashkevich_product.attribute_value_controller:newAction }
+    methods:  [GET, POST]
+
+attributevalue_edit:
+    path:     /{id}/edit
+    defaults: { _controller: b_pashkevich_product.attribute_value_controller:editAction }
+    methods:  [GET, POST]
+
+attributevalue_delete:
+    path:     /{id}/delete
+    defaults: { _controller: b_pashkevich_product.attribute_value_controller:deleteAction }
+    methods:  DELETE

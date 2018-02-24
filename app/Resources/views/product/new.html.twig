@@ -13,11 +13,13 @@
         <label for="image" style="min-width: 120px;  margin-left: -10px;">Image</label>
         <input type="text" name="image" id="image" style=" margin-left: -5px;"> <br>
 
-        <p><select size="1" name="category">
+        <p>
+            <select size="1" name="category">
                 {% for category in categories %}
                     <option value="{{ category.id }}">{{ category.name }}</option>
                 {% endfor %}
-            </select></p>
+            </select>
+        </p>
         <br>
         <button class="shopping-cart" type="submit" style="width: 330px;">Create</button>
     </form>

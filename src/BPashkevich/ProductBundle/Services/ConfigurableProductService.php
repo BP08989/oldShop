@@ -53,6 +53,23 @@ class ConfigurableProductService
         return null;
     }
 
+    public function getSelectedAttributesId(ConfigurableProduct $product)
+    {
+        $queryBuilder = $this->dbService->getQueryBuilder();
+        $queryBuilder
+            ->select('attribute_id')
+            ->from('product_attribute_value')
+            ->where('product_id = ?')
+            ->setParameter(0, $product->getId());
+        $sth = $queryBuilder->execute();
+        $data = $sth->fetchAll();
+        $attrs = [];
+        for ($i = 0; $i < count($data); $i++){
+            $attrs[$i] = $data[$i]['attribute_id'];
+        }
+        return $attrs;
+    }
+
     public function editProduct(ConfigurableProduct $product)
     {
         $this->em->flush();

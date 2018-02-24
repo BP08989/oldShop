@@ -16,7 +16,7 @@ class AttributeType extends AbstractType
         $builder
             ->add('code')
             ->add('name')
-            ->add('require');
+            ->add('mandatory');
     }/**
      * {@inheritdoc}
      */

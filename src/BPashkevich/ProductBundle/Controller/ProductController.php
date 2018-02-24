@@ -2,6 +2,7 @@
 
 namespace BPashkevich\ProductBundle\Controller;
 
+use BPashkevich\ProductBundle\Entity\Attribute;
 use BPashkevich\ProductBundle\Entity\Product;
 use BPashkevich\ProductBundle\Services\AttributeService;
 use BPashkevich\ProductBundle\Services\AttributeValueService;
@@ -50,8 +51,14 @@ class ProductController extends Controller
 
     public function indexAction()
     {
+        $products = $this->productService->getAllProduct();
+        $attributes = [];
+        foreach ($products as $product){
+            $attributes[$product->getId()] = $product->getAttributes();
+        }
         return $this->render('product/index.html.twig', array(
-            'products' => $this->productService->getAllProduct(),
+            'products' => $products,
+            'attributes' => attributes,
             'categories' => $this->categoryService->getAllCategories(),
         ));
     }
@@ -103,7 +110,7 @@ class ProductController extends Controller
         $counter=0;
         foreach ($requestData as $attribute){
             $attributeValue = new AttributeValue();
-            $attributeValue->setAttribute($attributes[$counter]);
+//            $attributeValue->setAttribute($attributes[$counter]);
             $attributeValue->setValue($attribute);
             $this->attributeValueService->createAttributeValue($attributeValue);
             $attributesValues[$counter] = $attributeValue;
@@ -114,6 +121,11 @@ class ProductController extends Controller
         $this->productService->createProduct($product, $attributes, $attributesValues);
         $image->setProduct($product);
         $this->imageService->createImage($image);
+
+//        $value = $attributes[1]->getAttributeValues()[0];
+//        var_dump($value);
+//        die();
+
         return $this->redirectToRoute('product_show', array('id' => $product->getId()));
     }
 
@@ -123,13 +135,19 @@ class ProductController extends Controller
      */
     public function showAction(Product $product)
     {
-        $deleteForm = $this->createDeleteForm($product);
+
+        //        $value = [];
+//        foreach ($data as $datum){
+//            $value[$datum['name']] = $datum['value'];
+//        }
+//        var_dump($data);
+//        die();
 
         return $this->render('product/show.html.twig', array(
+            'data' => $this->productService->getAttributesValues($product),
             'product' => $product,
-            'categoryName' => $this->get('b_pashkevich_product.category_srvice')->getCategoryById($product->getCategory()),
-            'delete_form' => $deleteForm->createView(),
-            'categories' => $this->get('b_pashkevich_product.category_srvice')->getAllCategories(),
+            'categoryName' => $product->getCategory(),
+            'categories' => $this->categoryService->getAllCategories(),
         ));
     }
 

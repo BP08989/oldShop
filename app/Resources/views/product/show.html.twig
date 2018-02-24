@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block header %}
-    {{ product.name }}
+    {{ data[0].value }}
 {% endblock %}
 
 {% block main %}
@@ -27,37 +27,19 @@
         <div class="col-sm-4">
             <div class="metrics text-muted">
                 <div class="description">
-                    Name:
-                    {{ product.name }}
-                    <br><br>
-                    Brand:
-                    {{ product.brand }}
-                    <br><br>
-                    Materialtype:
-                    {{ product.material }}
-                    <br><br>
-                    Weight:
-                    {{ product.weight }}
-                    <br><br>
-                    Size:
-                    {{ product.size }}
+                    {% for value in data %}
+                        {{ value.name }}:
+                        {{ value.value }}<br>
+                    {% endfor %}
                 </div>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="metrics text-muted">
                 <div class="description">
-                    Description:
-                    {{ product.description }}
-                    <br><br>
                     Category:
                     <a href="/category/{{ categoryName.id }}/show">{{ categoryName.name }}</a>
                     <br><br>
-                    Quanity:
-                    {{ product.quanity }}
-                    <br><br>
-                    Price:
-                    {{ product.price }} $
                 </div>
             </div>
         </div>

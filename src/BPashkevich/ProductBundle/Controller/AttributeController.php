@@ -3,6 +3,7 @@
 namespace BPashkevich\ProductBundle\Controller;
 
 use BPashkevich\ProductBundle\Entity\Attribute;
+use BPashkevich\ProductBundle\Services\AttributeService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -12,18 +13,22 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AttributeController extends Controller
 {
+
+    private $attributeService;
+
+    public function __construct(AttributeService $attributeService)
+    {
+        $this->attributeService = $attributeService;
+    }
+
     /**
      * Lists all attribute entities.
      *
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $attributes = $em->getRepository('BPashkevichProductBundle:Attribute')->findAll();
-
         return $this->render('attribute/index.html.twig', array(
-            'attributes' => $attributes,
+            'attributes' => $this->attributeService->getAllAttributes(),
         ));
     }
 

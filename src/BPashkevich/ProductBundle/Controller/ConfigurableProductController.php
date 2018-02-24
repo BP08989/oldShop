@@ -60,8 +60,8 @@ class ConfigurableProductController extends Controller
     public function newAction(Request $request)
     {
         return $this->render('configurableproduct/new.html.twig', array(
-            'requireAttributes' => $this->attributeService->findAttributes(array('require' => 1,)),
-            'notRequireAttributes' => $this->attributeService->findAttributes(array('require' => 0,)),
+            'requireAttributes' => $this->attributeService->findAttributes(array('mandatory' => 1,)),
+            'notRequireAttributes' => $this->attributeService->findAttributes(array('mandatory' => 0,)),
             'categories' => $this->categoryService->getAllCategories(),
         ));
     }
@@ -99,9 +99,9 @@ class ConfigurableProductController extends Controller
 
         $counter=0;
         foreach ($requestData as $attribute){
-            if($attributes[$counter]->getRequire()){
+            if($attributes[$counter]->getMandatory()){
                 $attributeValue = new AttributeValue();
-                $attributeValue->setAttribute($attributes[$counter]);
+//                $attributeValue->setAttribute($attributes[$counter]);
                 $attributeValue->setValue($attribute);
                 $this->attributeValueService->createAttributeValue($attributeValue);
                 $attributesValues[$counter] = $attributeValue;
@@ -137,6 +137,19 @@ class ConfigurableProductController extends Controller
         return $this->render('configurableproduct/show.html.twig', array(
             'configurableProduct' => $configurableProduct,
             'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    public function updateAction(Request $request, ConfigurableProduct $configurableProduct)
+    {
+        var_dump($configurableProduct->getAttribures());
+        die();
+
+        return $this->render('configurableproduct/edit.html.twig', array(
+            'configurableProduct' => $configurableProduct,
+            'requireAttributes' => $this->attributeService->findAttributes(array('mandatory' => 1,)),
+            'notRequireAttributes' => $configurableProduct->getAttribures(),
+            'categories' => $this->categoryService->getAllCategories(),
         ));
     }
 
