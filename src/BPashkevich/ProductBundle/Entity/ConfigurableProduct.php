@@ -40,6 +40,12 @@ class ConfigurableProduct
      * @ORM\ManyToMany(targetEntity="Attribute", inversedBy="configurableProduct")
      */
     private $attribures;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="configurableProduct")
+     */
+    private $simpleProducts;
+
     /**
      * Constructor
      */
@@ -190,5 +196,41 @@ class ConfigurableProduct
     public function getAttribures()
     {
         return $this->attribures;
+    }
+
+    /**
+     * Add simpleProduct.
+     *
+     * @param \BPashkevich\ProductBundle\Entity\Product $simpleProduct
+     *
+     * @return ConfigurableProduct
+     */
+    public function addSimpleProduct(\BPashkevich\ProductBundle\Entity\Product $simpleProduct)
+    {
+        $this->simpleProducts[] = $simpleProduct;
+
+        return $this;
+    }
+
+    /**
+     * Remove simpleProduct.
+     *
+     * @param \BPashkevich\ProductBundle\Entity\Product $simpleProduct
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeSimpleProduct(\BPashkevich\ProductBundle\Entity\Product $simpleProduct)
+    {
+        return $this->simpleProducts->removeElement($simpleProduct);
+    }
+
+    /**
+     * Get simpleProducts.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSimpleProducts()
+    {
+        return $this->simpleProducts;
     }
 }

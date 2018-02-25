@@ -3,9 +3,11 @@
 namespace BPashkevich\ProductBundle\Controller;
 
 use BPashkevich\ProductBundle\Entity\Attribute;
+use BPashkevich\ProductBundle\Entity\ConfigurableProduct;
 use BPashkevich\ProductBundle\Entity\Product;
 use BPashkevich\ProductBundle\Services\AttributeService;
 use BPashkevich\ProductBundle\Services\AttributeValueService;
+use BPashkevich\ProductBundle\Services\ConfigurableProductService;
 use BPashkevich\ProductBundle\Services\ImageService;
 use BPashkevich\ProductBundle\Services\ProductService;
 use BPashkevich\ProductBundle\Services\CategoryService;
@@ -33,14 +35,18 @@ class ProductController extends Controller
 
     private $imageService;
 
+    private $configurableProductService;
+
     public function __construct(ProductService $productService, CategoryService $categoryService,
                                 ImageService $imageService, AttributeService $attributeService,
-                                AttributeValueService $attributeValueService)
+                                AttributeValueService $attributeValueService,
+                                ConfigurableProductService $configurableProductService)
     {
         $this->productService = $productService;
         $this->categoryService = $categoryService;
         $this->attributeService = $attributeService;
         $this->attributeValueService = $attributeValueService;
+        $this->configurableProductService = $configurableProductService;
         $this->imageService = $imageService;
     }
 
@@ -58,7 +64,7 @@ class ProductController extends Controller
         }
         return $this->render('product/index.html.twig', array(
             'products' => $products,
-            'attributes' => attributes,
+            'attributes' => $attributes,
             'categories' => $this->categoryService->getAllCategories(),
         ));
     }
@@ -68,52 +74,65 @@ class ProductController extends Controller
      *
      */
 
-    public function newAction(Request $request)
+    public function newAction(Request $request, ConfigurableProduct $configurableProduct = null)
     {
-        return $this->render('product/new.html.twig', array(
-            'requireAttributes' => $this->attributeService->findAttributes(array('require' => 1,)),
-            'categories' => $this->categoryService->getAllCategories(),
-        ));
+        $result['attributes'] = $this->attributeService->findAttributes(array('mandatory' => 1,));
+
+        if ($configurableProduct){
+//            $result['attributes'] = $configurableProduct->getAttribures();
+            $result['id'] = $configurableProduct->getId();
+            $result['configAttr'] = $this->configurableProductService->getNotMandatoryAttributes($configurableProduct);
+        }
+        else{
+//            $result['attributes'] = $this->attributeService->findAttributes(array('mandatory' => 1,));
+            $result['categories'] = $this->categoryService->getAllCategories();
+        }
+
+        return $this->render('product/new.html.twig', $result);
     }
 
-    public function saveAction(Request $request)
+    public function saveAction(Request $request, ConfigurableProduct $configurableProduct = null)
     {
         $product = new Product();
         $requestData = $request->request->all();
+
+        if ($configurableProduct){
+            $requestData['category'] = $configurableProduct->getCategory()->getId();
+            $product->setConfigurableProduct($configurableProduct);
+        }
+
         $requestDataKeys = array_keys($requestData);
         $attributes = [];
         $attributesValues = [];
         $category = new Category();
         $image = new Image();
 
-        $counter = 0;
         foreach ($requestDataKeys as $key){
             switch ($key){
                 case "category":
                     $category = $this->categoryService->findCategories(array(
-                        'id' => $requestData[$requestDataKeys[$counter]],
+                        'id' => $requestData[$key],
                         ))[0];
                     break;
                 case "image":
-                    $image->setUrl($requestData[$requestDataKeys[$counter]]);
+                    $image->setUrl($requestData[$key]);
                     break;
                 default:
-                    $attributes[$counter] = $this->attributeService->findAttributes(array('id' => $key,))[0];
+                    $attributes[] = $this->attributeService->findAttributes(array('id' => $key,))[0];
                     break;
             }
-            $counter++;
         }
 
         unset($requestData['category']);
         unset($requestData['image']);
 
-        $counter=0;
+        $counter = 0;
         foreach ($requestData as $attribute){
             $attributeValue = new AttributeValue();
-//            $attributeValue->setAttribute($attributes[$counter]);
+            $attributeValue->setAttribute($attributes[$counter]);
             $attributeValue->setValue($attribute);
             $this->attributeValueService->createAttributeValue($attributeValue);
-            $attributesValues[$counter] = $attributeValue;
+            $attributesValues[] = $attributeValue;
             $counter++;
         }
 
@@ -122,11 +141,11 @@ class ProductController extends Controller
         $image->setProduct($product);
         $this->imageService->createImage($image);
 
-//        $value = $attributes[1]->getAttributeValues()[0];
-//        var_dump($value);
-//        die();
-
         return $this->redirectToRoute('product_show', array('id' => $product->getId()));
+    }
+
+    public function newProductFromConfigurableAction(){
+
     }
 
     /**

@@ -37,6 +37,11 @@ class Product
     private $productOrders;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ConfigurableProduct", inversedBy="simpleProducts")
+     */
+    private $configurableProduct;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -149,5 +154,29 @@ class Product
     public function getProductOrders()
     {
         return $this->productOrders;
+    }
+
+    /**
+     * Set configurableProduct.
+     *
+     * @param \BPashkevich\ProductBundle\Entity\ConfigurableProduct|null $configurableProduct
+     *
+     * @return Product
+     */
+    public function setConfigurableProduct(\BPashkevich\ProductBundle\Entity\ConfigurableProduct $configurableProduct = null)
+    {
+        $this->configurableProduct = $configurableProduct;
+
+        return $this;
+    }
+
+    /**
+     * Get configurableProduct.
+     *
+     * @return \BPashkevich\ProductBundle\Entity\ConfigurableProduct|null
+     */
+    public function getConfigurableProduct()
+    {
+        return $this->configurableProduct;
     }
 }

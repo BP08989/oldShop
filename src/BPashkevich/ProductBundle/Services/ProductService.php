@@ -91,21 +91,21 @@ class ProductService
         return $values;
     }
 
-    public function getAttributesValues(Product $product)
-    {
-        $queryBuilder = $this->dbService->getQueryBuilder();
-        $queryBuilder
-            ->select('a.name', 'v.value')
-            ->from('product_attribute_value', 'p')
-            ->innerJoin('p', 'attribute', 'a', 'p.attribute_id=a.id')
-            ->innerJoin('p', 'attribute_value', 'v','p.value_id=v.id')
-            ->where('p.product_id = ?')
-            ->setParameter(0, $product->getId());
-        $sth = $queryBuilder->execute();
-        $value = $sth->fetchAll();
+        public function getAttributesValues(Product $product)
+        {
+            $queryBuilder = $this->dbService->getQueryBuilder();
+            $queryBuilder
+                ->select('a.name', 'v.value')
+                ->from('product_attribute_value', 'p')
+                ->innerJoin('p', 'attribute', 'a', 'p.attribute_id=a.id')
+                ->innerJoin('p', 'attribute_value', 'v','p.value_id=v.id')
+                ->where('p.product_id = ?')
+                ->setParameter(0, $product->getId());
+            $sth = $queryBuilder->execute();
+            $value = $sth->fetchAll();
 
-        return $value;
-    }
+            return $value;
+        }
 
     public function editProduct(Product $product)
     {

@@ -37,7 +37,7 @@ services:
         class: BPashkevich\ProductBundle\Controller\ProductController
         arguments: ['@b_pashkevich_product.product_srvice', '@b_pashkevich_product.category_srvice',
          '@b_pashkevich_product.image_srvice', '@b_pashkevich_product.attribure_srvice',
-          '@b_pashkevich_product.attribure_value_srvice',]
+          '@b_pashkevich_product.attribure_value_srvice', '@b_pashkevich_product.configurable_product_srvice']
 
     b_pashkevich_product.category_controller:
         class: BPashkevich\ProductBundle\Controller\CategoryController

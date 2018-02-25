@@ -99,15 +99,15 @@ class ConfigurableProductController extends Controller
 
         $counter=0;
         foreach ($requestData as $attribute){
+            $product->addAttribure($attributes[$counter]);
             if($attributes[$counter]->getMandatory()){
                 $attributeValue = new AttributeValue();
-//                $attributeValue->setAttribute($attributes[$counter]);
+                $attributeValue->setAttribute($attributes[$counter]);
                 $attributeValue->setValue($attribute);
                 $this->attributeValueService->createAttributeValue($attributeValue);
                 $attributesValues[$counter] = $attributeValue;
             }
             else{
-                $product->addAttribure($attributes[$counter]);
                 unset($attributes[$counter]);
             }
             $counter++;
@@ -121,7 +121,6 @@ class ConfigurableProductController extends Controller
 
         var_dump($product);
         die();
-
 
         return $this->redirectToRoute('product_show', array('id' => $product->getId()));
     }

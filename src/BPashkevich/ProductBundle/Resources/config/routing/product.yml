@@ -13,8 +13,18 @@ product_new:
     defaults: { _controller: b_pashkevich_product.product_controller:newAction }
     methods:  [GET, POST]
 
+product_new_child:
+    path:     /new/{id}
+    defaults: { _controller: b_pashkevich_product.product_controller:newAction }
+    methods:  [GET, POST]
+
 product_save:
     path:     /save
+    defaults: { _controller: b_pashkevich_product.product_controller:saveAction }
+    methods:  [POST]
+
+product_save_child:
+    path:     /save/{id}
     defaults: { _controller: b_pashkevich_product.product_controller:saveAction }
     methods:  [POST]
 

@@ -3,16 +3,30 @@
 {% block body %}
     <h1>Simple Product creation</h1>
 
-    <form action="{{ path('product_save') }}" method="post">
+    <form action="{{ path('product_save_child', {'id': id }) }}" method="post">
 
-        {% for requireAttribute in requireAttributes %}
-            <label for="{{ requireAttribute.name }}" style="min-width: 120px;  margin-left: -10px;">{{ requireAttribute.name }}</label>
-            <input type="text" name="{{ requireAttribute.id }}" id="{{ requireAttribute.name }}" style=" margin-left: -5px;"> <br>
+        {% for attribute in attributes %}
+            <label for="{{ attribute.name }}" style="min-width: 120px;  margin-left: -10px;">{{ attribute.name }}</label>
+            <input type="text" name="{{ attribute.id }}" id="{{ attribute.name }}" style=" margin-left: -5px;"> <br>
         {% endfor %}
 
         <label for="image" style="min-width: 120px;  margin-left: -10px;">Image</label>
         <input type="text" name="image" id="image" style=" margin-left: -5px;"> <br>
 
+        {% if configAttr is defined %}
+            {% for key, attribute in configAttr %}
+            <p>
+                <label for="{{ key }}" style="min-width: 120px;  margin-left: -10px;">{{ key }}</label>
+                <select size="1" name="{{ attribute[0]['attribute_id'] }}">
+                    {% for value in attribute %}
+                        <option value="{{ value['value'] }}">{{ value['value'] }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            {% endfor %}
+        {% endif %}
+
+        {% if categories is defined %}
         <p>
             <select size="1" name="category">
                 {% for category in categories %}
@@ -20,6 +34,7 @@
                 {% endfor %}
             </select>
         </p>
+        {% endif %}
         <br>
         <button class="shopping-cart" type="submit" style="width: 330px;">Create</button>
     </form>

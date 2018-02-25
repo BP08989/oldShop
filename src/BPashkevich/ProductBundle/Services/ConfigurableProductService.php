@@ -58,7 +58,7 @@ class ConfigurableProductService
         $queryBuilder = $this->dbService->getQueryBuilder();
         $queryBuilder
             ->select('attribute_id')
-            ->from('product_attribute_value')
+            ->from('configurable_product_attribute_value')
             ->where('product_id = ?')
             ->setParameter(0, $product->getId());
         $sth = $queryBuilder->execute();
@@ -68,6 +68,56 @@ class ConfigurableProductService
             $attrs[$i] = $data[$i]['attribute_id'];
         }
         return $attrs;
+    }
+
+    public function getAttributesValues(ConfigurableProduct $product)
+    {
+        $queryBuilder = $this->dbService->getQueryBuilder();
+        $queryBuilder
+            ->select('a.name', 'v.value')
+            ->from('configurable_product_attribute_value', 'p')
+            ->innerJoin('p', 'attribute', 'a', 'p.attribute_id=a.id')
+            ->innerJoin('p', 'attribute_value', 'v','p.value_id=v.id')
+            ->where('p.product_id = ?')
+            ->setParameter(0, $product->getId());
+        $sth = $queryBuilder->execute();
+        $value = $sth->fetchAll();
+
+        return $value;
+    }
+
+    public function getNotMandatoryAttributes(ConfigurableProduct $product)
+    {
+        $queryBuilder = $this->dbService->getQueryBuilder();
+        $queryBuilder
+            ->select('distinct a.name', 'a.id as attribute_id', 'v.id', 'v.value')
+            ->from('configurable_product_attribute', 'cpa')
+            ->innerJoin('cpa', 'attribute', 'a', 'cpa.attribute_id=a.id')
+            ->innerJoin('cpa', 'attribute_value', 'v', 'cpa.attribute_id=v.attribute_id')
+            ->where('cpa.configurable_product_id = ?')
+            ->where('a.mandatory = 0')
+            ->setParameter(0, $product->getId());
+        $sth = $queryBuilder->execute();
+        $value = $sth->fetchAll();
+        $attr = [];
+
+        $counter = 0;
+        $number = 0 ;
+        foreach ($value as  $val){
+            if ($counter != 0){
+                if ($value[$counter-1]['name'] != $val['name']){
+                    $number=0;
+                }
+                else{
+                    $number++;
+                }
+            }
+            $attr[$val['name']][$number] = ['id' => $val['id'],'value' => $val['value'], 'attribute_id' => $val['attribute_id']];
+
+            $counter++;
+        }
+
+        return $attr;
     }
 
     public function editProduct(ConfigurableProduct $product)
