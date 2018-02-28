@@ -7,7 +7,7 @@ use BPashkevich\ProductBundle\Entity\Image;
 class DBService
 {
 
-    private  $queryBuilder;
+    private  $conn;
 
     public function __construct()
     {
@@ -19,12 +19,12 @@ class DBService
             'host' => 'localhost',
             'driver' => 'pdo_mysql',
         );
-        $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
-        $this->queryBuilder = $conn->createQueryBuilder();
+        $this->conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+
     }
 
     public function getQueryBuilder()
     {
-        return $this->queryBuilder;
+        return $this->queryBuilder = $this->conn->createQueryBuilder();
     }
 }

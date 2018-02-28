@@ -79,12 +79,10 @@ class ProductController extends Controller
         $result['attributes'] = $this->attributeService->findAttributes(array('mandatory' => 1,));
 
         if ($configurableProduct){
-//            $result['attributes'] = $configurableProduct->getAttribures();
             $result['id'] = $configurableProduct->getId();
             $result['configAttr'] = $this->configurableProductService->getNotMandatoryAttributes($configurableProduct);
         }
         else{
-//            $result['attributes'] = $this->attributeService->findAttributes(array('mandatory' => 1,));
             $result['categories'] = $this->categoryService->getAllCategories();
         }
 
@@ -128,11 +126,20 @@ class ProductController extends Controller
 
         $counter = 0;
         foreach ($requestData as $attribute){
-            $attributeValue = new AttributeValue();
-            $attributeValue->setAttribute($attributes[$counter]);
-            $attributeValue->setValue($attribute);
-            $this->attributeValueService->createAttributeValue($attributeValue);
-            $attributesValues[] = $attributeValue;
+            $val = $this->attributeValueService->findAttributeValues(array(
+                'attribute' => $attributes[$counter],
+                'value' => $attribute,
+            ));
+            if(!$val){
+                $attributeValue = new AttributeValue();
+                $attributeValue->setAttribute($attributes[$counter]);
+                $attributeValue->setValue($attribute);
+                $this->attributeValueService->createAttributeValue($attributeValue);
+                $attributesValues[] = $attributeValue;
+            }
+            else{
+                $attributesValues[] = $val[0];
+            }
             $counter++;
         }
 
@@ -154,13 +161,6 @@ class ProductController extends Controller
      */
     public function showAction(Product $product)
     {
-
-        //        $value = [];
-//        foreach ($data as $datum){
-//            $value[$datum['name']] = $datum['value'];
-//        }
-//        var_dump($data);
-//        die();
 
         return $this->render('product/show.html.twig', array(
             'data' => $this->productService->getAttributesValues($product),

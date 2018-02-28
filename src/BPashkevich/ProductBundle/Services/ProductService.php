@@ -2,6 +2,7 @@
 
 namespace BPashkevich\ProductBundle\Services;
 
+use BPashkevich\ProductBundle\Entity\Attribute;
 use BPashkevich\ProductBundle\Entity\Product;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -70,25 +71,24 @@ class ProductService
             return $attrs;
     }
 
-    public function getAttributesValuesId(Product $product)
+    public function getAttributesValuesId(int $productId, int $attrId)
     {
         $queryBuilder = $this->dbService->getQueryBuilder();
         $queryBuilder
-            ->select('value_id', 'attribute_id')
-            ->from('product_attribute_value')
-            ->where('product_id = ?')
-            ->setParameter(0, $product->getId());
+            ->select('value_id', 'value')
+            ->from('product_attribute_value', 'p')
+            ->innerJoin('p', 'attribute_value', 'v','p.value_id=v.id')
+            ->where('p.product_id = ? and p.attribute_id = ?')
+            ->setParameter(0, $productId)
+            ->setParameter(1, $attrId);
+
         $sth = $queryBuilder->execute();
         $data = $sth->fetchAll();
-        $values = [];
-        foreach ($data as $datum) {
-            $values[$datum['attribute_id']] = $datum['value_id'];
 
-        }
-        var_dump($values);
-        die();
+//        var_dump($data);
+//        die();
 
-        return $values;
+        return array($data[0]['value_id'], $data[0]['value']);
     }
 
         public function getAttributesValues(Product $product)
@@ -103,6 +103,9 @@ class ProductService
                 ->setParameter(0, $product->getId());
             $sth = $queryBuilder->execute();
             $value = $sth->fetchAll();
+
+//            var_dump($value);
+//            die();
 
             return $value;
         }

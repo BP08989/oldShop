@@ -2,7 +2,9 @@
 
 namespace BPashkevich\ProductBundle\Services;
 
+use BPashkevich\ProductBundle\Entity\Attribute;
 use BPashkevich\ProductBundle\Entity\ConfigurableProduct;
+use BPashkevich\ProductBundle\Entity\Product;
 
 class ConfigurableProductService
 {
@@ -12,11 +14,14 @@ class ConfigurableProductService
 
     private  $repository;
 
-    public function __construct(\Doctrine\ORM\EntityManager $em, DBService $dbService)
+    private $productService;
+
+    public function __construct(\Doctrine\ORM\EntityManager $em, DBService $dbService, ProductService $productService)
     {
         $this->em = $em;
         $this->dbService = $dbService;
         $this->repository = $this->em->getRepository('BPashkevichProductBundle:ConfigurableProduct');
+        $this->productService = $productService;
     }
 
     public function getAllProduct()
@@ -82,6 +87,9 @@ class ConfigurableProductService
             ->setParameter(0, $product->getId());
         $sth = $queryBuilder->execute();
         $value = $sth->fetchAll();
+//
+//        var_dump($value);
+//        die();
 
         return $value;
     }
@@ -117,7 +125,46 @@ class ConfigurableProductService
             $counter++;
         }
 
+//        var_dump($attr);
+//        die();
+
         return $attr;
+    }
+
+    public function getSimplesParams(ConfigurableProduct $configurableProduct){
+        $simpleProducts = $configurableProduct->getSimpleProducts();
+        $options = array();
+        $allowedAttributes = array();
+        $allowedValues = array();
+
+        /** @var Product $simpleProduct */
+        foreach ($simpleProducts as $simpleProduct){
+            $key = '';
+            $names = array();
+            /** @var Attribute $attribute */
+            foreach ($configurableProduct->getAttribures() as $attribute){
+                list($value_id, $value) = $this->productService->getAttributesValuesId($simpleProduct->getId(), $attribute->getId());
+                if (!$attribute->getMandatory()){
+                    $key .= $value_id . ',';
+                    $allowedValues[$attribute->getId()][$value_id] = $value;
+                    $allowedAttributes[$attribute->getId()] = $attribute->getName();
+                }
+                else{
+                    $names[$attribute->getName()] =$value;
+                }
+            }
+            $options[$key] = $names;
+        }
+
+        $params = array(
+            'options' => $options,
+            'allowedAttributes' => $allowedAttributes,
+            'allowedValue' => $allowedValues,
+        );
+
+//        die(var_dump('params = ',  $params));
+
+        return $params;
     }
 
     public function editProduct(ConfigurableProduct $product)

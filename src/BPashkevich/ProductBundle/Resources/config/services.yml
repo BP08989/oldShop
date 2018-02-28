@@ -17,7 +17,8 @@ services:
 
     b_pashkevich_product.configurable_product_srvice:
         class: BPashkevich\ProductBundle\Services\ConfigurableProductService
-        arguments: ['@doctrine.orm.entity_manager', '@b_pashkevich_product.db_service']
+        arguments: ['@doctrine.orm.entity_manager', '@b_pashkevich_product.db_service',
+         '@b_pashkevich_product.product_srvice']
 
     b_pashkevich_product.category_srvice:
         class: BPashkevich\ProductBundle\Services\CategoryService

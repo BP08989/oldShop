@@ -1,28 +1,83 @@
-{% extends 'base.html.twig' %}
+{% extends 'default/main.html.twig' %}
 
-{% block body %}
-    <h1>Configurableproduct</h1>
+{% block title %}
+    Symfony Shop
+{% endblock %}
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ configurableProduct.id }}</td>
-            </tr>
-        </tbody>
-    </table>
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/styles.css') }}"/>
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"/>
+{% endblock %}
 
-    <ul>
-        <li>
-            <a href="{{ path('configurableproduct_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('configurableproduct_edit', { 'id': configurableProduct.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+{% block menu %}
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block main %}
+    <script>
+        function ready() {
+            option = new Options({{ options|raw }});
+        }
+
+        document.addEventListener("DOMContentLoaded", ready);
+    </script>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="metrics text-muted">
+                <img src="{{ product.getImages().get(0).getUrl() }}" alt="img" style="width: 400px; height: 400px;"><br>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="metrics text-muted">
+                <div class="description">
+                    {% for value in data %}
+                        {{ value.name }}:
+                        {{ value.value }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="metrics text-muted">
+                <div class="description">
+                    Category:
+                    <a href="/category/{{ categoryName.id }}/show">{{ categoryName.name }}</a>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4" style="visibility: hidden;">
+            <div class="metrics text-muted">
+                <div class="description">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="metrics text-muted">
+                <div class="description">
+                </div>
+                <a href="/cart/add/{{ product.id }}">
+                    <input type="button" class="shopping-cart" value="Add to Cart">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-4" style="visibility: hidden;">
+            <div class="metrics text-muted">
+                <div class="description">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('js/show.js') }}"></script>
 {% endblock %}

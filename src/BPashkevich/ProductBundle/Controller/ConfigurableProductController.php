@@ -131,11 +131,18 @@ class ConfigurableProductController extends Controller
      */
     public function showAction(ConfigurableProduct $configurableProduct)
     {
-        $deleteForm = $this->createDeleteForm($configurableProduct);
+
+        $params = $this->configurableProductService->getSimplesParams($configurableProduct);
+        $params = json_encode($params);
+
+//        die(var_dump($params));
 
         return $this->render('configurableproduct/show.html.twig', array(
-            'configurableProduct' => $configurableProduct,
-            'delete_form' => $deleteForm->createView(),
+            'product' => $configurableProduct,
+            'data' => $this->configurableProductService->getAttributesValues($configurableProduct),
+            'categoryName' => $configurableProduct->getCategory(),
+            'options' => $params,
+            'categories' => $this->categoryService->getAllCategories(),
         ));
     }
 
