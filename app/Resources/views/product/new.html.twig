@@ -3,7 +3,11 @@
 {% block body %}
     <h1>Simple Product creation</h1>
 
-    <form action="{{ path('product_save_child', {'id': id }) }}" method="post">
+    {% if id is defined %}
+            <form action="{{ path('product_save_child', {'id': id }) }}" method="post">
+    {% else %}
+            <form action="{{ path('product_save') }}" method="post">
+    {% endif %}
 
         {% for attribute in attributes %}
             <label for="{{ attribute.name }}" style="min-width: 120px;  margin-left: -10px;">{{ attribute.name }}</label>

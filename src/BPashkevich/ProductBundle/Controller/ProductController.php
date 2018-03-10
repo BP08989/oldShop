@@ -161,6 +161,7 @@ class ProductController extends Controller
      */
     public function showAction(Product $product)
     {
+//        die(var_dump($this->productService->getAttributesValues($product)));
 
         return $this->render('product/show.html.twig', array(
             'data' => $this->productService->getAttributesValues($product),

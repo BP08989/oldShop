@@ -3,6 +3,9 @@
 namespace BPashkevich\ProductBundle\Controller;
 
 use BPashkevich\ProductBundle\Entity\Category;
+use BPashkevich\ProductBundle\Services\CategoryService;
+use BPashkevich\ProductBundle\Services\ConfigurableProductService;
+use BPashkevich\ProductBundle\Services\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -12,6 +15,21 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CategoryController extends Controller
 {
+
+    private $configurableProductService;
+
+    private $productService;
+
+    private $categoryService;
+
+    public function __construct(CategoryService $categoryService, ProductService $productService,
+                                ConfigurableProductService $configurableProductService)
+    {
+        $this->categoryService = $categoryService;
+        $this->productService = $productService;
+        $this->configurableProductService = $configurableProductService;
+    }
+
     /**
      * Lists all category entities.
      *
@@ -53,12 +71,32 @@ class CategoryController extends Controller
      */
     public function showAction(Category $category)
     {
-        $deleteForm = $this->createDeleteForm($category);
+        $products = $category->getProducts();
+        $products = $this->productService->selectSingleProducts($products);
+        $cProducts = $category->getConfigurableProducts();
+        $productsAttr = array();
+        $cProductsAttr = array();
 
+        foreach ($products as $product){
+            $productsAttr[$product->getId()]['Name'] = $this->productService->getShortInfo($product, 'Name');
+            $productsAttr[$product->getId()]['ShortDescription'] = $this->productService->getShortInfo($product, 'Short description');
+            $productsAttr[$product->getId()]['Price'] = $this->productService->getShortInfo($product, 'Price');
+        }
+
+        foreach ($cProducts as $cProduct){
+            $cProductsAttr[$cProduct->getId()]['Name'] = $this->configurableProductService
+                ->getShortInfo($cProduct, 'Name');
+            $cProductsAttr[$cProduct->getId()]['ShortDescription'] = $this->configurableProductService
+                ->getShortInfo($cProduct, 'Short description');
+            $cProductsAttr[$cProduct->getId()]['Price'] = $this->configurableProductService
+                ->getShortInfo($cProduct, 'Price');
+        }
         return $this->render('category/show.html.twig', array(
-            'products' => $category->getProducts(),
-            'categories' => $this->get('b_pashkevich_product.category_srvice')
-                ->getAllCategories(),
+            'products' => $products,
+            'productsAttr' => $productsAttr,
+            'configurableProducts' => $cProducts,
+            'configurableProductsAttr' => $cProductsAttr,
+            'categories' => $this->categoryService->getAllCategories(),
             'category' => $category,
         ));
     }

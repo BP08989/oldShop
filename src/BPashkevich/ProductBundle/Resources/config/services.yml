@@ -42,7 +42,7 @@ services:
 
     b_pashkevich_product.category_controller:
         class: BPashkevich\ProductBundle\Controller\CategoryController
-        arguments: ['@b_pashkevich_product.category_srvice']
+        arguments: ['@b_pashkevich_product.category_srvice', '@b_pashkevich_product.product_srvice', '@b_pashkevich_product.configurable_product_srvice']
 
     b_pashkevich_product.attribute_controller:
         class: BPashkevich\ProductBundle\Controller\AttributeController

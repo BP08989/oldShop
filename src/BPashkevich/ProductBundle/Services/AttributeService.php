@@ -21,10 +21,10 @@ class AttributeService
         return $this->repository->findAll();
     }
 
-    public function findAttributes(array $params)
-    {
-        return $this->repository->findBy($params);
-    }
+        public function findAttributes(array $params)
+        {
+            return $this->repository->findBy($params);
+        }
 
     public function createAttribute(Attribute $attribute)
     {

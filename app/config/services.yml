@@ -28,6 +28,7 @@ services:
         resource: '../../src/AppBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
+        arguments: ['@b_pashkevich_product.category_srvice', '@b_pashkevich_product.product_srvice', '@b_pashkevich_product.configurable_product_srvice']
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:

@@ -75,6 +75,23 @@ class ConfigurableProductService
         return $attrs;
     }
 
+    public function getShortInfo(ConfigurableProduct $product, $attr)
+    {
+        $queryBuilder = $this->dbService->getQueryBuilder();
+        $queryBuilder
+            ->select('v.value')
+            ->from('configurable_product_attribute_value', 'p')
+            ->innerJoin('p', 'attribute', 'a', 'p.attribute_id=a.id')
+            ->innerJoin('p', 'attribute_value', 'v','p.value_id=v.id')
+            ->where('p.product_id = ?')
+            ->andWhere('a.name = ?')
+            ->setParameter(0, $product->getId())
+            ->setParameter(1, $attr);
+        $sth = $queryBuilder->execute();
+
+        return $sth->fetch()['value'];
+    }
+
     public function getAttributesValues(ConfigurableProduct $product)
     {
         $queryBuilder = $this->dbService->getQueryBuilder();
@@ -87,9 +104,6 @@ class ConfigurableProductService
             ->setParameter(0, $product->getId());
         $sth = $queryBuilder->execute();
         $value = $sth->fetchAll();
-//
-//        var_dump($value);
-//        die();
 
         return $value;
     }
@@ -136,6 +150,7 @@ class ConfigurableProductService
         $options = array();
         $allowedAttributes = array();
         $allowedValues = array();
+        $images = array();
 
         /** @var Product $simpleProduct */
         foreach ($simpleProducts as $simpleProduct){
@@ -154,12 +169,14 @@ class ConfigurableProductService
                 }
             }
             $options[$key] = $names;
+            $images[$key] = $simpleProduct->getImages()[0]->getUrl();
         }
 
         $params = array(
             'options' => $options,
             'allowedAttributes' => $allowedAttributes,
             'allowedValue' => $allowedValues,
+            'images' => $images,
         );
 
 //        die(var_dump('params = ',  $params));

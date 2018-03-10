@@ -29,9 +29,37 @@ class ProductService
         return $this->repository->findAll();
     }
 
-    public function getProductFromCategory($category)
+    public function findProducts(array $params)
     {
-        return  $this->repository->findBy( array('category' => $category));
+        return $this->repository->findBy($params);
+    }
+
+    public function getShortInfo($product, $attr){
+        $queryBuilder = $this->dbService->getQueryBuilder();
+        $queryBuilder
+            ->select('v.value')
+            ->from('product_attribute_value', 'p')
+            ->innerJoin('p', 'attribute', 'a', 'p.attribute_id=a.id')
+            ->innerJoin('p', 'attribute_value', 'v','p.value_id=v.id')
+            ->where('p.product_id = ?')
+            ->andWhere('a.name = ?')
+            ->setParameter(0, $product->getId())
+            ->setParameter(1, $attr);
+        $sth = $queryBuilder->execute();
+
+        return $sth->fetch()['value'];
+    }
+
+    public function selectSingleProducts($products)
+    {
+        $singleProducts = array();
+        foreach ($products as $product){
+            if($product->getConfigurableProduct() == null){
+                $singleProducts[] = $product;
+            }
+        }
+
+        return $singleProducts;
     }
 
     public function createProduct(Product $product, array $attributes, array $attributeValues)
@@ -71,7 +99,7 @@ class ProductService
             return $attrs;
     }
 
-    public function getAttributesValuesId(int $productId, int $attrId)
+    public function getAttributesValuesId($productId, $attrId)
     {
         $queryBuilder = $this->dbService->getQueryBuilder();
         $queryBuilder
@@ -91,8 +119,8 @@ class ProductService
         return array($data[0]['value_id'], $data[0]['value']);
     }
 
-        public function getAttributesValues(Product $product)
-        {
+    public function getAttributesValues(Product $product)
+    {
             $queryBuilder = $this->dbService->getQueryBuilder();
             $queryBuilder
                 ->select('a.name', 'v.value')
@@ -108,7 +136,7 @@ class ProductService
 //            die();
 
             return $value;
-        }
+    }
 
     public function editProduct(Product $product)
     {

@@ -17,9 +17,14 @@
 {% endblock %}
 
 {% block main %}
+
     <script>
         function ready() {
             option = new Options({{ options|raw }});
+            option.disableFirstRadio();
+            $(':radio').change(function(){
+                option.selected(this);
+            });
         }
 
         document.addEventListener("DOMContentLoaded", ready);
@@ -28,26 +33,25 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="metrics text-muted">
-                <img src="{{ product.getImages().get(0).getUrl() }}" alt="img" style="width: 400px; height: 400px;"><br>
+                <img src="{{ product.getImages().get(0).getUrl() }}" id="mainImg" alt="img" style="width: 400px; height: 400px;"><br>
+                <div class="description">
+                    <br>
+                    Category:
+                    <a href="/category/{{ categoryName.id }}/show">{{ categoryName.name }}</a>
+                    <br><br>
+                </div>
             </div>
         </div>
 
         <div class="col-sm-4">
             <div class="metrics text-muted">
-                <div class="description">
+                <div class="description" id="MandatoryInfo">
                     {% for value in data %}
                         {{ value.name }}:
                         {{ value.value }}<br>
                     {% endfor %}
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="metrics text-muted">
-                <div class="description">
-                    Category:
-                    <a href="/category/{{ categoryName.id }}/show">{{ categoryName.name }}</a>
-                    <br><br>
+                <div class="description" id="info">
                 </div>
             </div>
         </div>
@@ -79,5 +83,6 @@
         </div>
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{ asset('js/show.js') }}"></script>
 {% endblock %}
