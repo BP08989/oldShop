@@ -1,0 +1,19 @@
+cart_index:
+    path:     /
+    defaults: { _controller: b_pashkevich_product.cart_controller:indexAction }
+    methods:  GET
+
+cart_add:
+    path:     /add/{id}
+    defaults: { _controller: b_pashkevich_product.cart_controller:addAction }
+    methods:  GET
+
+cart_remove:
+    path:     /remove/{id}
+    defaults: { _controller: b_pashkevich_product.cart_controller:removeAction }
+    methods:  GET
+
+cart_clear:
+    path:     /clear
+    defaults: { _controller: b_pashkevich_product.cart_controller:clearAction }
+    methods:  GET

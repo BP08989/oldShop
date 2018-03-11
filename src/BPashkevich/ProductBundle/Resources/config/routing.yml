@@ -29,3 +29,8 @@ b_pashkevich_product_configurableproduct:
 b_pashkevich_product_attributevalue:
         resource: "@BPashkevichProductBundle/Resources/config/routing/attributevalue.yml"
         prefix:   /attributevalue
+
+b_pashkevich_product_cart:
+        resource: "@BPashkevichProductBundle/Resources/config/routing/cart.yml"
+        prefix:   /cart
+

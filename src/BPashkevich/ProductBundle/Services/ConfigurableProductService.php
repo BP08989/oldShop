@@ -151,6 +151,7 @@ class ConfigurableProductService
         $allowedAttributes = array();
         $allowedValues = array();
         $images = array();
+        $productsByKey = array();
 
         /** @var Product $simpleProduct */
         foreach ($simpleProducts as $simpleProduct){
@@ -168,6 +169,7 @@ class ConfigurableProductService
                     $names[$attribute->getName()] =$value;
                 }
             }
+            $productsByKey[$key] = $simpleProduct->getId();
             $options[$key] = $names;
             $images[$key] = $simpleProduct->getImages()[0]->getUrl();
         }
@@ -177,6 +179,7 @@ class ConfigurableProductService
             'allowedAttributes' => $allowedAttributes,
             'allowedValue' => $allowedValues,
             'images' => $images,
+            'products' => $productsByKey,
         );
 
 //        die(var_dump('params = ',  $params));

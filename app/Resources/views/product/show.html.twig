@@ -57,9 +57,15 @@
             <div class="metrics text-muted">
                 <div class="description">
                 </div>
+                {% if isConsist == false %}
                 <a href="/cart/add/{{ product.id }}">
                     <input type="button" class="shopping-cart" value="Add to Cart">
                 </a>
+                {% else %}
+                <a href="/cart/remove/{{ product.id }}">
+                    <input type="button" class="shopping-cart" value="Remove from Cart">
+                </a>
+                {% endif %}
             </div>
         </div>
 

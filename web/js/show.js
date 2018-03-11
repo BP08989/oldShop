@@ -67,6 +67,7 @@ class Options {
 
                 $('#MandatoryInfo').html(mandatoryData);
                 $("#mainImg").attr("src", this.options["images"][firstKey]);
+                $("#cart").attr("href", "/cart/add/"+this.options["products"    ][firstKey]);
             }
         }.bind(this));
 

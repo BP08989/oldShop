@@ -1,0 +1,131 @@
+{% extends 'default/main.html.twig' %}
+
+{% block title %}
+    Symfony Shop
+{% endblock %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="../../css/styles.css"/>
+    <link type="text/css" rel="stylesheet" href="../../css/bootstrap.css"/>
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block header %}
+    Cart
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+    <div class="col-xs-12 col-sm-8 row">
+        <ul class="list-group shadow">
+            {% for product in products %}
+            <li class="list-group-item clearfix task">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-2">
+                        <a href="{{ path('product_show', { 'id': product.id }) }}">
+                            <img src="{{ product.getImages().get(0).getUrl() }}" alt="img" style="width: 120px; height: 120px;">
+                        </a>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="description">
+                            <h2>
+                                <a href="{{ path('product_show', { 'id': product.id }) }}">
+                                    {{ productsAttr[product.id]['Name'] }}
+                                </a>
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-2">
+                        <div class="description">
+                            <h2>
+                                {{ productsAttr[product.id]['Price'] }} $
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-2">
+                        <div class="pull-right">
+                            <h2>
+                            <a href="/cart/remove/{{ product.id }}">
+                                <input type="button" class="shopping-cart" value="Remove">
+                            </a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+            <li class="list-group-item clearfix task">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-2">
+                        <a>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKJy1cywRzwcTE8JwVU4O1ohbtzEVCYOWMwr5sL2XkzTR0FQfi" alt="img" style="width: 120px; height: 120px;">
+                        </a>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="description">
+                            <h2>
+                                Total cost
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-2">
+                        <div class="description">
+                            <h2>
+                                {{ totalCost }} $
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-2">
+                        <div class="pull-right">
+                            <h2>
+                                <a href="/cart/clear">
+                                    <input type="button" class="shopping-cart" value="Remove all">
+                                </a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-sm-4" style="visibility: hidden;">
+        <div class="metrics text-muted">
+            <div class="description">
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4" style="visibility: hidden;">
+            <div class="metrics text-muted">
+                <div class="description">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="metrics text-muted">
+                <a href="/cart/clear">
+                    <input type="button" class="shopping-cart" value="Checkout">
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-4" style="visibility: hidden;">
+            <div class="metrics text-muted">
+                <div class="description">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -133,6 +133,8 @@ class ConfigurableProductController extends Controller
     {
 
         $params = $this->configurableProductService->getSimplesParams($configurableProduct);
+//        die(var_dump($params));
+
         $params = json_encode($params);
 
 //        die(var_dump($params));

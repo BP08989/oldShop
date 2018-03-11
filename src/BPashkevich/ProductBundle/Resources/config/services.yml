@@ -53,6 +53,10 @@ services:
         arguments: ['@b_pashkevich_product.attribure_value_srvice', '@b_pashkevich_product.category_srvice',
          '@b_pashkevich_product.attribure_srvice']
 
+    b_pashkevich_product.cart_controller:
+        class: BPashkevich\ProductBundle\Controller\CartController
+        arguments: ['@b_pashkevich_product.category_srvice', '@b_pashkevich_product.product_srvice']
+
     b_pashkevich_product.db_service:
         class: BPashkevich\ProductBundle\Services\DBService
         arguments: []

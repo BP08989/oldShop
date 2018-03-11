@@ -168,6 +168,7 @@ class ProductController extends Controller
             'product' => $product,
             'categoryName' => $product->getCategory(),
             'categories' => $this->categoryService->getAllCategories(),
+            'isConsist' => in_array($product->getId(), $_SESSION['cart']),
         ));
     }
 

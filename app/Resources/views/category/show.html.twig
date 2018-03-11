@@ -29,8 +29,8 @@
                         {{ configurableProductsAttr[product.id]['ShortDescription'] }}<br>
                         {{ configurableProductsAttr[product.id]['Price'] }} $
                     </div>
-                    <a href="/cart/add/{{ product.id }}">
-                        <input type="button" class="shopping-cart" value="Add to Cart">
+                    <a href="{{ path('configurableproduct_show', { 'id': product.id }) }}">
+                        <input type="button" class="shopping-cart" value="Select config">
                     </a>
                 </div>
             </div>

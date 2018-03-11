@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use BPashkevich\ProductBundle\Entity\Product;
 use BPashkevich\ProductBundle\Services\CategoryService;
 use BPashkevich\ProductBundle\Services\ConfigurableProductService;
 use BPashkevich\ProductBundle\Services\ProductService;
@@ -34,30 +35,36 @@ class DefaultController extends Controller
         $cProducts = $this->configurableProductService->getAllProduct();
         $productsAttr = array();
         $cProductsAttr = array();
+        $isProductInCart = array();
+
+        if(empty($_SESSION['cart'])){
+            $_SESSION['cart'] = array();
+        }
 
         foreach ($products as $product){
             $productsAttr[$product->getId()]['Name'] = $this->productService->getShortInfo($product, 'Name');
             $productsAttr[$product->getId()]['ShortDescription'] = $this->productService->getShortInfo($product, 'Short description');
             $productsAttr[$product->getId()]['Price'] = $this->productService->getShortInfo($product, 'Price');
+
+            $isProductInCart[$product->getId()] = array_search($product->getId(), $_SESSION['cart']);
         }
 
         foreach ($cProducts as $cProduct){
-            $cProductsAttr[$cProduct->getId()]['Name'] = $this->configurableProductService
-                ->getShortInfo($cProduct, 'Name');
+            $cProductsAttr[$cProduct->getId()]['Name'] = $this->configurableProductService->getShortInfo($cProduct, 'Name');
             $cProductsAttr[$cProduct->getId()]['ShortDescription'] = $this->configurableProductService
                 ->getShortInfo($cProduct, 'Short description');
-            $cProductsAttr[$cProduct->getId()]['Price'] = $this->configurableProductService
-                ->getShortInfo($cProduct, 'Price');
+            $cProductsAttr[$cProduct->getId()]['Price'] = $this->configurableProductService->getShortInfo($cProduct, 'Price');
         }
 
-//        die(var_dump($cProductsAttr));
+//        die(var_dump($isProductInCart));
 
-        return $this->render('default/home.html.twig', [
+        return $this->render('default/home.html.twig', array(
             'categories' => $this->categoryService->getAllCategories(),
             'products' => $products,
             'productsAttr' => $productsAttr,
             'configurableProducts' => $cProducts,
             'configurableProductsAttr' => $cProductsAttr,
-        ]);
+            'isProductInCart' => $isProductInCart,
+        ));
     }
 }
