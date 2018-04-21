@@ -9,8 +9,12 @@ use BPashkevich\ProductBundle\Services\ProductService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\View\View;
 
-class DefaultController extends Controller
+class DefaultController extends FOSRestController
 {
     private $configurableProductService;
 
@@ -26,9 +30,6 @@ class DefaultController extends Controller
         $this->configurableProductService = $configurableProductService;
     }
 
-    /**
-     * @Route("/", name="homepage")
-     */
     public function indexAction(Request $request)
     {
         $products = $this->productService->findProducts(array('configurableProduct' => null));

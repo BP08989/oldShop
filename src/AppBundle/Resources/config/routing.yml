@@ -1,0 +1,39 @@
+index:
+    path:     /
+    defaults: { _controller: app.default_controller:indexAction }
+
+getALLProducts:
+    path:     /api/getALLProducts
+    defaults: { _controller: app.product_api_controller:getALLProductsAction }
+
+getProductById:
+    path:     /api/getProductById
+    defaults: { _controller: app.product_api_controller:getProductByIdAction }
+
+getAttributes:
+    path:     /api/getAttributes
+    defaults: { _controller: app.product_api_controller:getAttributesAction}
+
+getALLCategories:
+    path:     /api/getALLCtegories
+    defaults: { _controller: app.category_api_controller:getALLCategoriesAction }
+
+getCategoryById:
+    path:     /api/getCategoryById
+    defaults: { _controller: app.category_api_controller:getCategoryByIdAction }
+
+getALLConfigurableProducts:
+    path:     /api/getALLConfigurableProducts
+    defaults: { _controller: app.configurable_product_api_controller:getALLConfigurableProductsAction }
+
+getALLAttributes:
+    path:     /api/getALLAttributes
+    defaults: { _controller: app.attribute_api_controller:getALLAttributesAction }
+
+getALLAttributeValues:
+    path:     /api/getALLAttributeValues
+    defaults: { _controller: app.attribute_value_api_controller:getALLAttributeValuesAction }
+
+getALLProductsFromCart:
+    path:     /api/getALLProductsFrom
+    defaults: { _controller: app.cart_api_controller:getALLProductsFromCartAction }

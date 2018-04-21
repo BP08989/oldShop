@@ -1,0 +1,28 @@
+services:
+    app.default_controller:
+        class: AppBundle\Controller\DefaultController
+        arguments: ['@b_pashkevich_product.category_srvice', '@b_pashkevich_product.product_srvice', '@b_pashkevich_product.configurable_product_srvice']
+
+    app.product_api_controller:
+            class: AppBundle\Controller\API\ProductAPIController
+            arguments: ['@b_pashkevich_product.product_srvice']
+
+    app.category_api_controller:
+            class: AppBundle\Controller\API\CategoryAPIController
+            arguments: ['@b_pashkevich_product.category_srvice']
+
+    app.configurable_product_api_controller:
+            class: AppBundle\Controller\API\ConfigurableProductAPIController
+            arguments: ['@b_pashkevich_product.configurable_product_srvice']
+
+    app.attribute_api_controller:
+            class: AppBundle\Controller\API\AttributeAPIController
+            arguments: ['@b_pashkevich_product.attribure_srvice']
+
+    app.attribute_value_api_controller:
+            class: AppBundle\Controller\API\AttributeValueAPIController
+            arguments: ['@b_pashkevich_product.attribure_value_srvice']
+
+    app.cart_api_controller:
+            class: AppBundle\Controller\API\CartAPIController
+            arguments: ['@b_pashkevich_product.category_srvice', '@b_pashkevich_product.product_srvice']

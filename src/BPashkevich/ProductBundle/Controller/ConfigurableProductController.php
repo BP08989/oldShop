@@ -139,6 +139,8 @@ class ConfigurableProductController extends Controller
 
 //        die(var_dump($params));
 
+//        return $params;
+
         return $this->render('configurableproduct/show.html.twig', array(
             'product' => $configurableProduct,
             'data' => $this->configurableProductService->getAttributesValues($configurableProduct),

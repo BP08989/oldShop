@@ -11,8 +11,6 @@ use BPashkevich\ProductBundle\Services\ConfigurableProductService;
 use BPashkevich\ProductBundle\Services\ImageService;
 use BPashkevich\ProductBundle\Services\ProductService;
 use BPashkevich\ProductBundle\Services\CategoryService;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use BPashkevich\ProductBundle\Entity\AttributeValue;
 use BPashkevich\ProductBundle\Entity\Category;
