@@ -21,6 +21,23 @@ class CategoryService
         return $this->repository->findAll();
     }
 
+    public function getShortInfo($id)
+    {
+        $result = array();
+        if($id != null) {
+            /** @var Category $category */
+            $category = $this->findCategories(array('id' => $id))[0];
+            $result[] = array('id' => $category->getId(), 'name' => $category->getName());
+        } else {
+            $categories = $this->getAllCategories();
+            foreach ($categories as $category) {
+                $result[] = array('id' => $category->getId(), 'name' => $category->getName());
+            }
+        }
+
+        return $result;
+    }
+
     public function findCategories(array $params)
     {
         return $this->repository->findBy($params);

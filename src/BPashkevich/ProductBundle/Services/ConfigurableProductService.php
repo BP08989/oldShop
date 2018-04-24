@@ -39,6 +39,40 @@ class ConfigurableProductService
         return $this->repository->findBy($params);
     }
 
+    public function getMainInfo(ConfigurableProduct $product)
+    {
+        return array(
+            'id' => $product->getId(),
+            'name' => $this->getShortInfo($product, 'Name'),
+            'price' => $this->getShortInfo($product, 'Price'),
+            'shortDescription' => $this->getShortInfo($product, 'Short Description'),
+            'img' => $product->getImages()[0]->getUrl()
+        );
+    }
+
+    public function getConfigProductMainInfo($id)
+    {
+        $result = array();
+        if($id != null) {
+            /** @var ConfigurableProduct $product */
+            $products = $this->findProducts(array('id' => $id));
+        } else {
+            $products = $this->getAllProduct();
+        }
+
+        foreach ($products as $product) {
+            $result[] = array(
+                'id' => $product->getId(),
+                'name' => $this->getShortInfo($product, 'Name'),
+                'price' => $this->getShortInfo($product, 'Price'),
+                'shortDescription' => $this->getShortInfo($product, 'Short Description'),
+                'img' => $product->getImages()[0]->getUrl()
+            );
+        }
+
+        return $result;
+    }
+
     public function createProduct(ConfigurableProduct $product, array $attributes, array $attributeValues)
     {
         if(count($attributes) == count($attributeValues)){

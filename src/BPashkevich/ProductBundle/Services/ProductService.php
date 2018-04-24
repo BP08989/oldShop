@@ -34,7 +34,8 @@ class ProductService
         return $this->repository->findBy($params);
     }
 
-    public function getShortInfo($product, $attr){
+    public function getShortInfo($product, $attr)
+    {
         $queryBuilder = $this->dbService->getQueryBuilder();
         $queryBuilder
             ->select('v.value')
@@ -48,6 +49,40 @@ class ProductService
         $sth = $queryBuilder->execute();
 
         return $sth->fetch()['value'];
+    }
+
+    public function getMainInfo(Product $product)
+    {
+        return array(
+            'id' => $product->getId(),
+            'name' => $this->getShortInfo($product, 'Name'),
+            'price' => $this->getShortInfo($product, 'Price'),
+            'shortDescription' => $this->getShortInfo($product, 'Short Description'),
+            'img' => $product->getImages()[0]->getUrl()
+        );
+    }
+
+    public function getSingleProductMainInfo($id)
+    {
+        $result = array();
+        if($id != null) {
+            /** @var Product $product */
+            $products = $this->findProducts(array('id' => $id, 'configurableProduct' => null));
+        } else {
+            $products = $this->findProducts(array('configurableProduct' => null));
+        }
+
+        foreach ($products as $product) {
+            $result[] = array(
+                'id' => $product->getId(),
+                'name' => $this->getShortInfo($product, 'Name'),
+                'price' => $this->getShortInfo($product, 'Price'),
+                'shortDescription' => $this->getShortInfo($product, 'Short Description'),
+                'img' => $product->getImages()[0]->getUrl()
+            );
+        }
+
+        return $result;
     }
 
     public function selectSingleProducts($products)

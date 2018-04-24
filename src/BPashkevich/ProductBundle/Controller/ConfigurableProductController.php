@@ -131,7 +131,6 @@ class ConfigurableProductController extends Controller
      */
     public function showAction(ConfigurableProduct $configurableProduct)
     {
-
         $params = $this->configurableProductService->getSimplesParams($configurableProduct);
 //        die(var_dump($params));
 

@@ -9,7 +9,7 @@ services:
 
     app.category_api_controller:
             class: AppBundle\Controller\API\CategoryAPIController
-            arguments: ['@b_pashkevich_product.category_srvice']
+            arguments: ['@b_pashkevich_product.category_srvice', '@b_pashkevich_product.product_srvice', '@b_pashkevich_product.configurable_product_srvice']
 
     app.configurable_product_api_controller:
             class: AppBundle\Controller\API\ConfigurableProductAPIController

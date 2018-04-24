@@ -10,6 +10,18 @@ getProductById:
     path:     /api/getProductById
     defaults: { _controller: app.product_api_controller:getProductByIdAction }
 
+getProductCategory:
+    path:     /api/getProductCategory
+    defaults: { _controller: app.product_api_controller:getProductCategoryAction }
+
+getProductData:
+    path:     /api/getProductData
+    defaults: { _controller: app.product_api_controller:getProductDataAction }
+
+getSingleProductMainInfo:
+    path:     /api/getSingleProductMainInfo
+    defaults: { _controller: app.product_api_controller:getSingleProductMainInfoAction }
+
 getAttributes:
     path:     /api/getAttributes
     defaults: { _controller: app.product_api_controller:getAttributesAction}
@@ -21,6 +33,18 @@ getALLCategories:
 getCategoryById:
     path:     /api/getCategoryById
     defaults: { _controller: app.category_api_controller:getCategoryByIdAction }
+
+getProductsFromCategory:
+    path:     /api/getProductsFromCategoryMainInfo
+    defaults: { _controller: app.category_api_controller:getProductsFromCategoryMainInfoAction }
+
+getConfigProductFromCategoryMainInfo:
+    path:     /api/getConfigProductFromCategoryMainInfo
+    defaults: { _controller: app.category_api_controller:getConfigProductFromCategoryMainInfoAction }
+
+getSimpleProductsFromCategoryMainInfoAction:
+    path:     /api/getSimpleProductsFromCategoryMainInfoAction
+    defaults: { _controller: app.category_api_controller:getSimpleProductsFromCategoryMainInfoAction }
 
 getALLConfigurableProducts:
     path:     /api/getALLConfigurableProducts
@@ -37,3 +61,19 @@ getALLAttributeValues:
 getALLProductsFromCart:
     path:     /api/getALLProductsFrom
     defaults: { _controller: app.cart_api_controller:getALLProductsFromCartAction }
+
+getCategoryShortInfo:
+    path:     /api/getCategoryShortInfo
+    defaults: { _controller: app.category_api_controller:getCategoryShortInfoAction }
+
+getConfigProductMainInfo:
+    path:     /api/getConfigProductMainInfo
+    defaults: { _controller: app.configurable_product_api_controller:getConfigProductMainInfoAction }
+
+getConfigurableProductForShow:
+    path:     /api/getConfigurableProductForShow
+    defaults: { _controller: app.configurable_product_api_controller:getConfigurableProductForShowAction }
+
+getProductsByParam:
+    path:     /api/getProductsByParam
+    defaults: { _controller: app.product_api_controller:getProductsByParamAction }
