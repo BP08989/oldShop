@@ -20,7 +20,13 @@ class ProductAPIController extends Controller
 
     public function getALLProductsAction()
     {
-        return $this->productService->getAllProduct();
+        $products = $this->productService->getAllProduct();
+        $currentProducts = array();
+        foreach ($products as $produt) {
+            $currentProducts[] = $this->productService->getMainInfo($produt);
+        }
+
+        return $currentProducts;
     }
 
     public function getProductByIdAction(Request $request)
