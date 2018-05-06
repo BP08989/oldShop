@@ -15,12 +15,23 @@ class UserService
 
     public function getAllUsers()
     {
-        return $this->em->getRepository('User')->findAll();
+        return $this->em->getRepository('BPashkevichUserBundle:User')->findAll();
     }
 
-    public function getCategoryById($id){
+    public function getUserById($id){
         return $this->em->getRepository('BPashkevichUserBundle:User')->find($id);
     }
+
+    public function getMainInfo(User $user)
+    {
+        return array(
+            'id' => $user->getId(),
+            'name' => $user->getUsername(),
+            'email' => $user->getEmail(),
+            'number' => $user->getPhoneNumber()
+        );
+    }
+
 
     public function findUserByUsername($username){
         return $this->em->getRepository('BPashkevichUserBundle:User')->findOneBy(array(

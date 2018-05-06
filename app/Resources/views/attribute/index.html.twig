@@ -9,7 +9,7 @@
                 <th>Id</th>
                 <th>Code</th>
                 <th>Name</th>
-                <th>Require</th>
+                <th>Mandatory</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -19,7 +19,7 @@
                 <td><a href="{{ path('attribute_show', { 'id': attribute.id }) }}">{{ attribute.id }}</a></td>
                 <td>{{ attribute.code }}</td>
                 <td>{{ attribute.name }}</td>
-                <td>{% if attribute.require %}Yes{% else %}No{% endif %}</td>
+                <td>{% if attribute.mandatory %}Yes{% else %}No{% endif %}</td>
                 <td>
                     <ul>
                         <li>

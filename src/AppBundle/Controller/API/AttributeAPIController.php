@@ -20,13 +20,30 @@ class AttributeAPIController extends Controller
 
     public function getALLAttributesAction()
     {
-        return $this->attributeService->getAllAttributes();
+        $attributes = $this->attributeService->getAllAttributes();
+
+        $attributesMainInfo = array();
+        foreach ($attributes as $attribute) {
+            $attributesMainInfo[] = $this->attributeService->getMainInfo($attribute);
+        }
+
+        return $attributesMainInfo;
     }
 
     public function getAttributeByIdAction(Request $request)
     {
         $id = $request->get('id');
-        return $this->attributeService->findAttributes(array('id' => $id));
+        $attribute = $this->attributeService->findAttributes(array('id' => $id))[0];
+        return $this->attributeService->getMainInfo($attribute);
     }
 
+    public function getMandatoryAttributesAction()
+    {
+        return $this->attributeService->findAttributes(array('mandatory' => 1,));
+    }
+
+    public function getNotMandatoryAttributesAction()
+    {
+        return $this->attributeService->findAttributes(array('mandatory' => 0,));
+    }
 }

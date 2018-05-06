@@ -54,10 +54,6 @@ getALLAttributes:
     path:     /api/getALLAttributes
     defaults: { _controller: app.attribute_api_controller:getALLAttributesAction }
 
-getALLAttributeValues:
-    path:     /api/getALLAttributeValues
-    defaults: { _controller: app.attribute_value_api_controller:getALLAttributeValuesAction }
-
 getALLProductsFromCart:
     path:     /api/getALLProductsFrom
     defaults: { _controller: app.cart_api_controller:getALLProductsFromCartAction }
@@ -77,3 +73,31 @@ getConfigurableProductForShow:
 getProductsByParam:
     path:     /api/getProductsByParam
     defaults: { _controller: app.product_api_controller:getProductsByParamAction }
+
+getUsersMainInfo:
+    path:     /api/getALLUsers
+    defaults: { _controller: app.user_api_controller:getALLUsersAction }
+
+getUserById:
+    path:     /api/getUserById
+    defaults: { _controller: app.user_api_controller:getUserByIdAction }
+
+getAttributeById:
+    path:     /api/getAttributeById
+    defaults: { _controller: app.attribute_api_controller:getAttributeByIdAction }
+
+getMandatorAttributes:
+    path:     /api/getMandatorAttributes
+    defaults: { _controller: app.attribute_api_controller:getMandatoryAttributesAction }
+
+getNotMandatorAttributes:
+    path:     /api/getNotMandatorAttributes
+    defaults: { _controller: app.attribute_api_controller:getNotMandatoryAttributesAction }
+
+getALLAttributeValues:
+    path:     /api/getALLAttributeValues
+    defaults: { _controller: app.attribute_value_api_controller:getALLAttributeValuesAction }
+
+getAttributeValueById:
+    path:     /api/getAttributeValueById
+    defaults: { _controller: app.attribute_value_api_controller:getAttributeValueByIdAction }

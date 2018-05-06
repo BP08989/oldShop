@@ -26,3 +26,7 @@ services:
     app.cart_api_controller:
             class: AppBundle\Controller\API\CartAPIController
             arguments: ['@b_pashkevich_product.category_srvice', '@b_pashkevich_product.product_srvice']
+
+    app.user_api_controller:
+            class: AppBundle\Controller\API\UserAPIController
+            arguments: ['@b_pashkevich_user.user_srvice']

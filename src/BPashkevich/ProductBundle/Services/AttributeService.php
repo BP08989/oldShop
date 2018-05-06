@@ -21,6 +21,16 @@ class AttributeService
         return $this->repository->findAll();
     }
 
+    public function getMainInfo(Attribute $attribute)
+    {
+        return array(
+            'id' => $attribute->getId(),
+            'name' => $attribute->getName(),
+            'code' => $attribute->getCode(),
+            'mondatory' => $attribute->getMandatory()
+        );
+    }
+
         public function findAttributes(array $params)
         {
             return $this->repository->findBy($params);

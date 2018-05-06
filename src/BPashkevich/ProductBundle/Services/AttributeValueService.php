@@ -21,6 +21,16 @@ class AttributeValueService
         return $this->repository->findAll();
     }
 
+    public function getMainInfo(AttributeValue $value)
+    {
+        return array(
+            'id' => $value->getId(),
+            'value' => $value->getValue(),
+            'attributeId' => $value->getAttribute()->getId(),
+            'attributeName' => $value->getAttribute()->getName(),
+        );
+    }
+
     public function findAttributeValues(array $params)
     {
         return $this->repository->findBy($params);

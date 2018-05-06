@@ -19,6 +19,8 @@ class UserController extends Controller
      */
     public function indexAction()
     {
+        $this->get('b_pashkevich_user.user_srvice')->getAllUsers();
+
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('BPashkevichUserBundle:User')->findAll();
@@ -64,21 +66,6 @@ class UserController extends Controller
     public function showAction(User $user)
     {
         $deleteForm = $this->createDeleteForm($user);
-
-//        $names = [];
-//        foreach($user->getProductOrders() as $productOrder) {
-//            $names[] = $productOrder->getId();
-//        }
-//
-//        var_dump($names);
-
-        $product = $this->getDoctrine()
-            ->getRepository("BPashkevichProductBundle:Product")
-            ->find(1);
-
-        var_dump($product->getCategory()->getName());
-
-        die();
 
         return $this->render('user/show.html.twig', array(
             'user' => $user,

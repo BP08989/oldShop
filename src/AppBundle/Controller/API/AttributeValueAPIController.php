@@ -21,13 +21,21 @@ class AttributeValueAPIController extends Controller
 
     public function getALLAttributeValuesAction()
     {
-        return $this->attributeValueService->getAllAttributeValues();
+        $attributeValues = $this->attributeValueService->getAllAttributeValues();
+        $attributeMainInfo = array();
+        foreach ($attributeValues as $attributeValue) {
+            $attributeMainInfo[] = $this->attributeValueService->getMainInfo($attributeValue);
+        }
+
+        return $attributeMainInfo;
     }
 
-    public function getAttributeValieByIdAction(Request $request)
+    public function getAttributeValueByIdAction(Request $request)
     {
         $id = $request->get('id');
-        return $this->attributeValueService->findAttributeValues(array('id' => $id));
+        $value = $this->attributeValueService->findAttributeValues(array('id' => $id))[0];
+
+        return $this->attributeValueService->getMainInfo($value);
     }
 
 }
