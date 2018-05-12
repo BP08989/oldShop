@@ -38,8 +38,6 @@ class AttributeService
 
     public function createAttribute(Attribute $attribute)
     {
-//        var_dump($attribute);
-//        die();
         $this->em->persist($attribute);
         $this->em->flush();
         return $attribute;

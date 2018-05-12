@@ -101,3 +101,76 @@ getALLAttributeValues:
 getAttributeValueById:
     path:     /api/getAttributeValueById
     defaults: { _controller: app.attribute_value_api_controller:getAttributeValueByIdAction }
+
+setAttributeById:
+    path:     /api/setAttributeById
+    defaults: { _controller: app.attribute_api_controller:saveAttributeAction }
+
+setAttributeValueById:
+    path:     /api/setAttributeValueById
+    defaults: { _controller: app.attribute_value_api_controller:saveAttributeValueAction }
+
+setCategoryById:
+    path:     /api/setCategoryById
+    defaults: { _controller: app.category_api_controller:saveCategoryAction }
+
+setConfigurableProductById:
+    path:     /api/setConfigurableProductById
+    defaults: { _controller: app.configurable_producte_api_controller:saveConfigurableProductAction }
+
+setProductById:
+    path:     /api/setProductById
+    defaults: { _controller: app.product_api_controller:saveProductAction }
+
+setUserById:
+    path:     /api/setUserById
+    defaults: { _controller: app.user_api_controller:saveUserAction }
+
+
+deleteAttributeById:
+    path:     /api/deleteAttributeById
+    defaults: { _controller: app.attribute_api_controller:deleteAttributeAction }
+
+deleteAttributeValueById:
+    path:     /api/deleteAttributeValueById
+    defaults: { _controller: app.attribute_value_api_controller:deleteAttributeValueAction }
+
+deleteCategoryById:
+    path:     /api/deleteCategoryById
+    defaults: { _controller: app.category_api_controller:deleteCategoryAction }
+
+deleteConfigurableProductById:
+    path:     /api/deleteConfigurableProductById
+    defaults: { _controller: app.configurable_producte_api_controller:deleteConfigurableProductAction }
+
+deleteProductById:
+    path:     /api/deleteProductById
+    defaults: { _controller: app.product_api_controller:deleteProductAction }
+
+deleteUserById:
+    path:     /api/deleteUserById
+    defaults: { _controller: app.user_api_controller:deleteUserAction }
+
+deleteALLAttributesById:
+    path:     /api/deleteALLAttributesById
+    defaults: { _controller: app.attribute_api_controller:deleteALLAttributesAction }
+
+deleteALLAttributeValuesById:
+    path:     /api/deleteALLAttributeValuesById
+    defaults: { _controller: app.attribute_value_api_controller:deleteALLAttributeValuesAction }
+
+deleteALLCategoriesById:
+    path:     /api/deleteALLCategoriesById
+    defaults: { _controller: app.category_api_controller:deleteALLCategoriesAction }
+
+deleteALLConfigurableProductsById:
+    path:     /api/sdeleteALLConfigurableProductsById
+    defaults: { _controller: app.configurable_producte_api_controller:deleteALLConfigurableProductsAction }
+
+deleteALLProductsById:
+    path:     /api/deleteALLProductsById
+    defaults: { _controller: app.product_api_controller:deleteALLProductsAction }
+
+deleteALLUsersById:
+    path:     /api/deleteALLUsersById
+    defaults: { _controller: app.user_api_controller:deleteALLUsersAction }

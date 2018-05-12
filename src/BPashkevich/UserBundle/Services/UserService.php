@@ -56,20 +56,20 @@ class UserService
 
     }
 
-    public function createCategory(User $user)
+    public function createUser(User $user)
     {
         $this->em->persist($user);
         $this->em->flush();
         return $user;
     }
 
-    public function editCategory(User $user)
+    public function editUser(User $user)
     {
         $this->em->flush();
         return $user;
     }
 
-    public function deleteCategory(User $user)
+    public function deleteUser(User $user)
     {
         $this->em->remove($user);
         $this->em->flush();

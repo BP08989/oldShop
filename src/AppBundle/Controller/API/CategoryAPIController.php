@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\API;
 
+use BPashkevich\ProductBundle\Entity\Category;
 use BPashkevich\ProductBundle\Services\ConfigurableProductService;
 use BPashkevich\ProductBundle\Services\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -89,5 +90,39 @@ class CategoryAPIController extends Controller
         }
 
         return $result;
+    }
+
+    public function saveCategoryAction(Request $request)
+    {
+        $id = $request->get('id');
+        $category =  new Category();
+        $category->setName($request->get('name'));
+        if ($id) {
+            $this->categoryService->editCategory($category);
+            $category = $this->categoryService->findCategories(array('id' => $id))[0];
+        } else {
+            $category = $this->categoryService->createCategory($category);
+        }
+
+        return $this->categoryService->getShortInfo($category->getId());
+    }
+
+    public function deleteCategoryAction(Request $request)
+    {
+        $id = $request->get('id');
+        $category = $this->categoryService->findCategories(array('id' => $id))[0];
+        $this->categoryService->findCategories($category);
+
+        return true;
+    }
+
+    public function deleteALLCategoriesAction(Request $request)
+    {
+        $categories = $this->categoryService->getAllCategories();
+        foreach ($categories as $category) {
+            $this->categoryService->deleteCategory($category);
+        }
+
+        return true;
     }
 }
